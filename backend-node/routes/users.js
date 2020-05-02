@@ -74,7 +74,7 @@ router.post("/register", function (req, res) {
         //var fullPath = req.file.originalname;    //get userprofile image original name as the fullpath
 
         var newUser = new User({
-            // usertype: req.body.usertype,
+            usertype: req.body.usertype,
             userid: req.body.userid,
             // selectclass: req.body.selectclass,
             // name: req.body.name,
