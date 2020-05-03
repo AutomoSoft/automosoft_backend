@@ -50,7 +50,7 @@ router.post("/login", function (req, res, next) {
                         name: user.name,
                         userid: user.userid,
                         email: user.email,
-                        // usertype: user.usertype,
+                        usertype: user.usertype,
                         // selectclass: user.selectclass
                     }
                 });
