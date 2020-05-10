@@ -10,6 +10,8 @@ const { createServer } = require('http');
 
 const config = require('./config/database');
 const users = require('./routes/users');
+const mobileUser=require('./routes/mobileUserLogin.routes');
+const addJobCard=require('./routes/addJobCard.routes');
 
 app.use(cors());
 const connection = mongoose.connect("mongodb://localhost:27017/AutomoSoft",
@@ -31,6 +33,8 @@ require('./config/passport')(passport);
 app.use(express.static(path.join(__dirname,"public")));
 
 app.use('/users', users);
+app.use('/mobileUser',mobileUser);
+app.use('/addJobCard',addJobCard);
 
 app.get("/", function(req,res) {
     //res.send("Hello world");
