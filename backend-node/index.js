@@ -12,7 +12,7 @@ const config = require('./config/database');
 const users = require('./routes/users');
 
 app.use(cors());
-const connection = mongoose.connect("mongodb://localhost:27017/AutomoSoft",
+const connection = mongoose.connect("mongodb+srv://Lalinda:Ucsc@123@cluster0-pvero.mongodb.net/AutomoSoft?retryWrites=true&w=majority",
 {
     useNewUrlParser : true,
 })
