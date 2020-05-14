@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
 const path = require('path');
+const env = require('dotenv').config();
+
 
 const { createServer } = require('http');
 
@@ -12,6 +14,9 @@ const config = require('./config/database');
 const users = require('./routes/users');
 const mobileUser=require('./routes/mobileUserLogin.routes');
 const addJobCard=require('./routes/addJobCard.routes');
+const contact = require('./routes/contact');
+const suppliers = require('./routes/suppliers');
+
 
 app.use(cors());
 const connection = mongoose.connect("mongodb+srv://Lalinda:Ucsc@123@cluster0-pvero.mongodb.net/AutomoSoft?retryWrites=true&w=majority",
@@ -35,6 +40,9 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use('/users', users);
 app.use('/mobileUser',mobileUser);
 app.use('/addJobCard',addJobCard);
+app.use('/contact' , contact);
+app.use('/suppliers' , suppliers);
+
 
 app.get("/", function(req,res) {
     //res.send("Hello world");
