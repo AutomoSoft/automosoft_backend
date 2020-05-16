@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
-var path = require('path');
+// var path = require('path');
 const fs = require('fs');
 
 var storage = multer.diskStorage({
@@ -51,7 +51,6 @@ router.post("/login", function (req, res, next) {
                         userid: user.userid,
                         email: user.email,
                         usertype: user.usertype,
-                        // selectclass: user.selectclass
                     }
                 });
                 next();
@@ -76,19 +75,15 @@ router.post("/register", function (req, res) {
         var newUser = new User({
             usertype: req.body.usertype,
             userid: req.body.userid,
-            // selectclass: req.body.selectclass,
-            // name: req.body.name,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             email: req.body.email,
             password: req.body.password,
-            // birthday: req.body.birthday,
-            // mobilenumber: req.body.mobilenumber,
-            // homenumber: req.body.homenumber,
-            // gender: req.body.gender,
-            // nationality: req.body.nationality,
-            // nicnumber: req.body.nicnumber,
-            // father: req.body.father,
-            // mother: req.body.mother,
-            // address: req.body.address,
+            contactnumber: req.body.contactnumber,
+            gender: req.body.gender,
+            nicnumber: req.body.nicnumber,
+            address: req.body.address,
+            vehiclenumber: req.body.vehicleRegNo,
             // filepath: fullPath,
         });
 

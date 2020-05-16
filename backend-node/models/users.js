@@ -3,23 +3,20 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.schema;
 
 
+//customer & employees
 const userSchema = mongoose.Schema({
     usertype: { type: String, require: true },
     userid: { type: String, require: true, index: true, unique: true },
-    //selectclass: { type: String, require: true },
-    //name: { type: String, require: true },
+    firstname: { type: String, require: true },
+    lastname: { type: String, require: true },
     email: { type: String, require: true },
     password: { type: String, require: true },
-    // birthday: { type: String, require: true },
-    // mobilenumber: { type: String, require: true },
-    // homenumber: { type: String, require: true },
-    // gender: { type: String, require: true },
-    // nationality: { type: String, require: true },
-    // nicnumber: { type: String, require: true },
-    // father: { type: String, require: true },
-    // mother: { type: String, require: true },
-    // address: { type: String, require: true },
-    // filepath: { type: String, require: true }
+    contactnumber: { type: String, require: true },
+    gender: { type: String, require: true },
+    nicnumber: { type: String, require: true },
+    address: { type: String, require: true },
+    vehiclenumber: { type: String, require: true },
+    filepath: { type: String, require: true }
 });
 
 const Users = module.exports = mongoose.model("Users", userSchema);
