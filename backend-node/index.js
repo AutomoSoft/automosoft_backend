@@ -10,6 +10,7 @@ const { createServer } = require('http');
 
 const config = require('./config/database');
 const users = require('./routes/users');
+const supplier = require('./routes/supplier');
 const mobileUser=require('./routes/mobileUserLogin.routes');
 const addJobCard=require('./routes/addJobCard.routes');
 
@@ -33,6 +34,7 @@ require('./config/passport')(passport);
 app.use(express.static(path.join(__dirname,"public")));
 
 app.use('/users', users);
+app.use('/supplier', supplier);
 app.use('/mobileUser',mobileUser);
 app.use('/addJobCard',addJobCard);
 
