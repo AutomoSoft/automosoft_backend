@@ -9,13 +9,16 @@ const env = require('dotenv').config();
 
 
 const { createServer } = require('http');
-
 const config = require('./config/database');
 const users = require('./routes/users');
-const mobileUser=require('./routes/mobileUserLogin.routes');
-const addJobCard=require('./routes/addJobCard.routes');
+
 const contact = require('./routes/contact');
 
+
+const mobileUser=require('./routes/mobile/mobileUserLogin.routes');
+const addJobCard=require('./routes/mobile/addJobCard.routes');
+
+const supplier = require('./routes/supplier');
 
 
 app.use(cors());
@@ -38,6 +41,7 @@ require('./config/passport')(passport);
 app.use(express.static(path.join(__dirname,"public")));
 
 app.use('/users', users);
+app.use('/supplier', supplier);
 app.use('/mobileUser',mobileUser);
 app.use('/addJobCard',addJobCard);
 app.use('/contact' , contact);
