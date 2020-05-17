@@ -9,8 +9,12 @@ const path = require('path');
 const { createServer } = require('http');
 const config = require('./config/database');
 const users = require('./routes/users');
+
 const mobileUser=require('./routes/mobile/mobileUserLogin.routes');
 const addJobCard=require('./routes/mobile/addJobCard.routes');
+
+const supplier = require('./routes/supplier');
+
 
 app.use(cors());
 const connection = mongoose.connect("mongodb+srv://Lalinda:Ucsc@123@cluster0-pvero.mongodb.net/AutomoSoft?retryWrites=true&w=majority",
@@ -32,6 +36,7 @@ require('./config/passport')(passport);
 app.use(express.static(path.join(__dirname,"public")));
 
 app.use('/users', users);
+app.use('/supplier', supplier);
 app.use('/mobileUser',mobileUser);
 app.use('/addJobCard',addJobCard);
 
