@@ -15,7 +15,7 @@ const users = require('./routes/users');
 const mobileUser=require('./routes/mobileUserLogin.routes');
 const addJobCard=require('./routes/addJobCard.routes');
 const contact = require('./routes/contact');
-const suppliers = require('./routes/suppliers');
+
 
 
 app.use(cors());
@@ -41,7 +41,7 @@ app.use('/users', users);
 app.use('/mobileUser',mobileUser);
 app.use('/addJobCard',addJobCard);
 app.use('/contact' , contact);
-app.use('/suppliers' , suppliers);
+
 
 
 app.get("/", function(req,res) {
