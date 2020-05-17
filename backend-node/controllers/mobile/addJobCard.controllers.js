@@ -1,4 +1,4 @@
-const addJobCard=require("../models/addJobCard.models");
+const addJobCard=require('../../models/mobile/addJobCard.models');
 const mongoose=require('mongoose');
 
 exports.addJobCard=(req,res)=>{

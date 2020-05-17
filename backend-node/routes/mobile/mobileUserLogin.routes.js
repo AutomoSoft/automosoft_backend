@@ -1,6 +1,6 @@
 const express=require("express");
 const router =express.Router();
-const mobileUser=require("../controllers/mobileUserLogin.controllers");
+const mobileUser=require('../../controllers/mobile/mobileUserLogin.controllers');
 
 
 router.post("/signUp",mobileUser.signUp);

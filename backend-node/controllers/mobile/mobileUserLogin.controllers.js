@@ -1,4 +1,4 @@
-const MobileUser=require('../models/mobileUserLogin.models');
+const MobileUser=require('../../models/mobile/mobileUserLogin.models');
 const bcrypt=require('bcryptjs');
 const mongoose=require('mongoose');
 const jwt =require("jsonwebtoken");

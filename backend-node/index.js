@@ -7,11 +7,10 @@ const cors = require('cors');
 const path = require('path');
 
 const { createServer } = require('http');
-
 const config = require('./config/database');
 const users = require('./routes/users');
-const mobileUser=require('./routes/mobileUserLogin.routes');
-const addJobCard=require('./routes/addJobCard.routes');
+const mobileUser=require('./routes/mobile/mobileUserLogin.routes');
+const addJobCard=require('./routes/mobile/addJobCard.routes');
 
 app.use(cors());
 const connection = mongoose.connect("mongodb+srv://Lalinda:Ucsc@123@cluster0-pvero.mongodb.net/AutomoSoft?retryWrites=true&w=majority",
