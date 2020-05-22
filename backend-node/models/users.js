@@ -15,6 +15,8 @@ const userSchema = mongoose.Schema({
     gender: { type: String, require: true },
     nicnumber: { type: String, require: true },
     address: { type: String, require: true },
+    addedby: { type: String, require: true },
+    addedon: { type: String, require: true },
     vehiclenumber: { type: String, require: true },
     filepath: { type: String, require: true }
 });

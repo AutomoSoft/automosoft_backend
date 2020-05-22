@@ -18,7 +18,9 @@ router.post("/registerSupplier", function (req, res) {
             itemtype: req.body.itemtype,
             itemid: req.body.itemid,
             brand: req.body.brand,
-            note: req.body.note
+            note: req.body.note,
+            addedby:req.body.addedby,
+            addedon:req.body.addedon,
             // filepath: fullPath,
         });
         

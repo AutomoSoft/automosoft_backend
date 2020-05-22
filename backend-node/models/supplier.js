@@ -13,7 +13,9 @@ const supplierSchema = mongoose.Schema({
     itemtype: { type: String, require: true },
     itemid: { type: String, require: true },
     brand: { type: String, require: true },
-    note: { type: String, require: true }
+    note: { type: String, require: true },
+    addedby: { type: String, require: true },
+    addedon: { type: String, require: true },
 });
 
 const Suppliers = module.exports = mongoose.model("Suppliers", supplierSchema);
