@@ -5,10 +5,15 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
 const path = require('path');
+const env = require('dotenv').config();
+
 
 const { createServer } = require('http');
 const config = require('./config/database');
 const users = require('./routes/users');
+
+const contact = require('./routes/contact');
+
 
 const mobileUser=require('./routes/mobile/mobileUserLogin.routes');
 const addJobCard=require('./routes/mobile/addJobCard.routes');
@@ -39,6 +44,9 @@ app.use('/users', users);
 app.use('/supplier', supplier);
 app.use('/mobileUser',mobileUser);
 app.use('/addJobCard',addJobCard);
+app.use('/contact' , contact);
+
+
 
 app.get("/", function(req,res) {
     //res.send("Hello world");
