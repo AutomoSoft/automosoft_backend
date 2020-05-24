@@ -121,11 +121,12 @@ router.get("/searchUsers/:userid", function (req, res, next) {
             res.json({ state: false, msg: "No user found..!" });
             return;
         }
-        User.findOne({ userid: userid })    //find user using userid
+         User.findOne({ userid: userid })    //find user using userid
             .select()
             .exec()
             .then(data => {
                 console.log("Data Transfer Success..!")
+                //console.log(data);
                 res.json({ state: true, msg: "Data Transfer Success..!", data: data });
 
             })
