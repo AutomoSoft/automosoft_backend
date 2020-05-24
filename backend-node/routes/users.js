@@ -112,5 +112,28 @@ router.post("/register", function (req, res) {
     });
 });
 
+//search user
+router.get("/searchUsers/:userid", function (req, res, next) {
+    const userid = req.params.userid;
+    User.findByUserid(userid, function (err, user) {
+        if (err) throw err;
+        if (!user) {    //check the user available or not
+            res.json({ state: false, msg: "No user found..!" });
+            return;
+        }
+        User.findOne({ userid: userid })    //find user using userid
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    })
+})
 
 module.exports = router; 
