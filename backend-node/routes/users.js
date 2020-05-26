@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
-// var path = require('path');
+var path = require('path');
 const fs = require('fs');
 
 var storage = multer.diskStorage({
@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
         cb(null, 'local_storage/profile_Images/')    //profile pictures of users
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname)   //set the file neme
+        cb(null, Date.now() + path.extname(file.originalname))   //set the file neme
     }
 });
 
@@ -69,8 +69,8 @@ router.post("/login", function (req, res, next) {
 //user registration
 router.post("/register", function (req, res) {
     upload(req, res, (err) => {
-        // console.log(req.file.filename)
-        //var fullPath = req.file.originalname;    //get userprofile image original name as the fullpath
+        //console.log(req.file.filename)
+        var fullPath = req.file.originalname;    //get userprofile image original name as the fullpath
 
         var newUser = new User({
             usertype: req.body.usertype,
@@ -86,7 +86,7 @@ router.post("/register", function (req, res) {
             addedby:req.body.addedby,
             addedon:req.body.addedon,
             vehiclenumber: req.body.vehicleRegNo,
-            // filepath: fullPath,
+            filepath: fullPath,
         });
 
         bcrypt.genSalt(10, function (err, salt) {   //generate password salt
