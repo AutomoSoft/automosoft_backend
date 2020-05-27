@@ -85,6 +85,8 @@ router.post("/register", function (req, res) {
             address: req.body.address,
             addedby:req.body.addedby,
             addedon:req.body.addedon,
+            lastmodifiedby:req.body.lastmodifiedby,
+            lastmodifiedon:req.body.lastmodifiedon,
             vehiclenumber: req.body.vehicleRegNo,
             filepath: fullPath,
         });
@@ -143,5 +145,41 @@ router.get("/profileImage/:filename", function (req, res) {
     //console.log(filename)
     res.sendFile(path.join(__dirname, '../local_storage/profile_Images/' + filename));
 });
+
+
+//update user
+
+router.post("/updateUser/:userid", function (req, res) {
+    const userid = req.params.userid;
+    console.log(req.body)
+    const input = {
+            usertype: req.body.usertype,
+            userid: req.body.userid,
+            firstname: req.body.firstName,
+            lastname: req.body.lastName,
+            email: req.body.email,
+            password: req.body.password,
+            contactnumber: req.body.contactnumber,
+            gender: req.body.gender,
+            nicnumber: req.body.nic,
+            address: req.body.address,
+            addedby:req.body.addedby,
+            addedon:req.body.addedon,
+            lastmodifiedby:req.body.lastmodifiedby,
+            lastmodifiedon:req.body.lastmodifiedon,
+            vehiclenumber: req.body.vehicleRegNo,
+    }
+    User.update({ userid: userid }, { $set: input })    //update user data with of the userid passed
+        .exec()
+        .then(data => {
+            console.log("Data Updated Successfully!")
+            res.json({ state: true, msg: "Data Updated Successfully!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to Update Data!!!")
+            res.json({ state: false, msg: "Failed to Update Data!!!" });
+        })
+})
 
 module.exports = router; 

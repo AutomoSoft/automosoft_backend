@@ -17,6 +17,8 @@ const userSchema = mongoose.Schema({
     address: { type: String, require: true },
     addedby: { type: String, require: true },
     addedon: { type: String, require: true },
+    lastmodifiedby: { type: String, require: true },
+    lastmodifiedon: { type: String, require: true },
     vehiclenumber: { type: String, require: true },
     filepath: { type: String, require: true }
 });
