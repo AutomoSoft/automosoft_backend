@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
         cb(null, 'local_storage/profile_Images/')    //profile pictures of users
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname))   //set the file neme
+        cb(null, file.originalname)   //set the file neme
     }
 });
 
@@ -135,6 +135,13 @@ router.get("/searchUsers/:userid", function (req, res, next) {
                 res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
             })
     })
-})
+});
+
+//get user profile images
+router.get("/profileImage/:filename", function (req, res) {
+    const filename = req.params.filename;
+    //console.log(filename)
+    res.sendFile(path.join(__dirname, '../local_storage/profile_Images/' + filename));
+});
 
 module.exports = router; 
