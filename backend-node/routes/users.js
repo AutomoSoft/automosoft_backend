@@ -19,7 +19,7 @@ var storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('profileImage');
 
-//user login
+/******************************************************** User Login *******************************************************/
 
 router.post("/login", function (req, res, next) {
     
@@ -65,8 +65,8 @@ router.post("/login", function (req, res, next) {
     });
 });
 
+/******************************************************** User Registration *******************************************************/
 
-//user registration
 router.post("/register", function (req, res) {
     upload(req, res, (err) => {
         //console.log(req.file.filename)
@@ -114,7 +114,8 @@ router.post("/register", function (req, res) {
     });
 });
 
-//search user
+/******************************************************** Search User *******************************************************/
+
 router.get("/searchUsers/:userid", function (req, res, next) {
     const userid = req.params.userid;
     User.findByUserid(userid, function (err, user) {
@@ -147,7 +148,7 @@ router.get("/profileImage/:filename", function (req, res) {
 });
 
 
-//update user
+/******************************************************** Update User *******************************************************/
 
 router.post("/updateUser/:userid", function (req, res) {
     const userid = req.params.userid;
@@ -178,6 +179,47 @@ router.post("/updateUser/:userid", function (req, res) {
             console.log("Failed to Update Data!!!")
             res.json({ state: false, msg: "Failed to Update Data!!!" });
         })
+});
+
+
+/******************************************************** Delete User *******************************************************/
+
+
+//delete userdata 
+router.delete("/deleteUser/:userid", function (req, res, next) {
+    const userid = req.params.userid;
+    User.findOneAndRemove({ userid: userid })       //find userid and delete user
+        .exec()
+        .then(data => {
+            console.log("Successfully removed User Data..!")
+            res.json({ state: true, msg: "Successfully removed User Data..!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to remove User Data")
+            res.json({ state: false, msg: "Failed to remove User Data" });
+        })
 })
+
+//delete user profile image 
+router.delete("/delprofImage/:filename", function (req, res) {
+    const filename = req.params.filename;
+    console.log(filename)
+    const path = 'local_storage/profile_Images/' + filename;
+    try {
+        fs.unlinkSync(path)
+        res.status(200).json({
+            message: 'Sucessfully removed User Image...!'
+        })
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: error
+        });
+    }
+});
+
+
+
 
 module.exports = router; 
