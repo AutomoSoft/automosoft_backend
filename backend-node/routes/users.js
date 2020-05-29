@@ -208,7 +208,7 @@ router.delete("/delprofImage/:filename", function (req, res) {
     const path = 'local_storage/profile_Images/' + filename;
     try {
         fs.unlinkSync(path)
-        res.status(200).json({
+        res.status(200).json({  
             message: 'Sucessfully removed User Image...!'
         })
     } catch (err) {
@@ -219,7 +219,32 @@ router.delete("/delprofImage/:filename", function (req, res) {
     }
 });
 
+/******************************************************** Search All Users *******************************************************/
 
+
+router.get("/searchAllUsers", function (req, res, next) {
+    
+    User.find( {}, { userid: 1, usertype: 1, firstname: 1, email: 1, contactnumber: 1 } )
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+});
+
+//get user profile images
+router.get("/profileImage/:filename", function (req, res) {
+    const filename = req.params.filename;
+    //console.log(filename)
+    res.sendFile(path.join(__dirname, '../local_storage/profile_Images/' + filename));
+});
 
 
 module.exports = router; 
