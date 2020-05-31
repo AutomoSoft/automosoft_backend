@@ -224,7 +224,7 @@ router.delete("/delprofImage/:filename", function (req, res) {
 
 router.get("/searchAllUsers", function (req, res, next) {
     
-    User.find( {}, { userid: 1, usertype: 1, firstname: 1, email: 1, contactnumber: 1 } )
+    User.find( {}, { userid: 1, usertype: 1, firstname: 1, email: 1, contactnumber: 1, filepath: 1 } )
         .select()
         .exec()
         .then(data => {

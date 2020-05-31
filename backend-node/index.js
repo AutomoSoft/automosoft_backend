@@ -8,9 +8,10 @@ const path = require('path');
 const env = require('dotenv').config();
 
 
-const { createServer } = require('http');
+const { createServer } = require('http'); 
 const config = require('./config/database');
 const users = require('./routes/users');
+const items = require('./routes/items');
 
 const contact = require('./routes/contact');
 
@@ -41,6 +42,7 @@ require('./config/passport')(passport);
 app.use(express.static(path.join(__dirname,"public")));
 
 app.use('/users', users);
+app.use('/items', items);
 app.use('/supplier', supplier);
 app.use('/mobileUser',mobileUser);
 app.use('/addJobCard',addJobCard);
