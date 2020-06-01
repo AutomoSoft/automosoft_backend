@@ -9,6 +9,7 @@ const supplierSchema = mongoose.Schema({
     supname: { type: String, require: true },
     supid: { type: String, require: true, index: true, unique: true },
     address: { type: String, require: true },
+    email: { type: String, require: true },
     contactnumber: { type: String, require: true },
     itemtype: { type: String, require: true },
     itemid: { type: String, require: true },

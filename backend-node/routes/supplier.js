@@ -14,6 +14,7 @@ router.post("/registerSupplier", function (req, res) {
             supname: req.body.supname,
             supid: req.body.supid,
             address: req.body.address,
+            email: req.body.email,
             contactnumber: req.body.contactnumber,
             itemtype: req.body.itemtype,
             itemid: req.body.itemid,
