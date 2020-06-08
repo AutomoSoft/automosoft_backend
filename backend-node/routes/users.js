@@ -87,7 +87,7 @@ router.post("/register", function (req, res) {
             addedon:req.body.addedon,
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
-            vehiclenumber: req.body.vehicleRegNo,
+            vehicles: req.body.vehicles,
             filepath: fullPath,
         });
 
