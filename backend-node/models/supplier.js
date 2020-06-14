@@ -18,5 +18,9 @@ const supplierSchema = mongoose.Schema({
 });
 
 const Suppliers = module.exports = mongoose.model("Suppliers", supplierSchema);
+module.exports.findBySupplierid = function (supid, callback) {
+    const query = { supid: supid };
 
+    Suppliers.findOne(query, callback);
+};
 
