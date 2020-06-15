@@ -36,7 +36,7 @@ router.post("/registerSupplier", function (req, res) {
              
         });
 
-/******************************************************** Search Supplier *******************************************************/
+/******************************************************** Search Supplier by id *******************************************************/
 
 router.get("/searchSuppliers/:supid", function (req, res, next) {
     const supid = req.params.supid;
@@ -62,12 +62,12 @@ router.get("/searchSuppliers/:supid", function (req, res, next) {
     })
 });
 
-/******************************************************SearchSuppliers******************************************************************* */
+/******************************************************Search All Suppliers******************************************************************* */
 
-router.get("/searchSuppliers", function (req, res, next) {
+router.get("/searchAllSuppliers", function (req, res, next) {
     
     Supplier.find( {}, { supid: 1, usertype: 1, supname: 1, items: 1, contactnumber: 1, addedon: 1 } )
-        .select()
+        .select() 
         .exec()
         .then(data => {
             console.log("Data Transfer Success..!")

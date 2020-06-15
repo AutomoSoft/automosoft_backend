@@ -131,6 +131,7 @@ router.get("/searchUsers/:userid", function (req, res, next) {
                 console.log("Data Transfer Success..!")
                 //console.log(data);
                 res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
 
             })
             .catch(error => {
@@ -226,7 +227,7 @@ router.get("/searchAllUsers", function (req, res, next) {
     
     User.find( {}, { userid: 1, usertype: 1, firstname: 1, email: 1, contactnumber: 1, filepath: 1 } )
         .select()
-        .exec()
+        .exec() 
         .then(data => {
             console.log("Data Transfer Success..!")
             //console.log(data);
