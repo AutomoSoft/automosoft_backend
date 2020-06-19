@@ -47,7 +47,7 @@ router.get("/searchSuppliers/:supid", function (req, res, next) {
             return;
         }
          Supplier.findOne({ supid: supid })    //find user using userid
-            .select()
+            .select() 
             .exec()
             .then(data => {
                 console.log("Data Transfer Success..!")

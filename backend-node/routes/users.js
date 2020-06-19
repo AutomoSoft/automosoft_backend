@@ -83,6 +83,8 @@ router.post("/register", function (req, res) {
             gender: req.body.gender,
             nicnumber: req.body.nicnumber,
             address: req.body.address,
+            expertise: req.body.expertise,
+            capacity: req.body.capacity,
             addedby:req.body.addedby,
             addedon:req.body.addedon,
             lastmodifiedby:req.body.lastmodifiedby,
