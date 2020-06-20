@@ -131,7 +131,7 @@ router.get("/searchUsers/:userid", function (req, res, next) {
             .exec()
             .then(data => {
                 console.log("Data Transfer Success..!")
-                //console.log(data);
+                //console.log(JSON.parse(data.vehicles));
                 res.json({ state: true, msg: "Data Transfer Success..!", data: data });
                 
 
