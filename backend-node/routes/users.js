@@ -85,6 +85,7 @@ router.post("/register", function (req, res) {
             address: req.body.address,
             expertise: req.body.expertise,
             capacity: req.body.capacity,
+            currentjobCap: req.body.currentjobCap,
             addedby:req.body.addedby,
             addedon:req.body.addedon,
             lastmodifiedby:req.body.lastmodifiedby,
@@ -249,5 +250,52 @@ router.get("/profileImage/:filename", function (req, res) {
     res.sendFile(path.join(__dirname, '../local_storage/profile_Images/' + filename));
 });
 
+/******************************************************** Customer Vehicles *******************************************************/
+
+router.get("/getVehicles/:userid", function (req, res, next) {
+    const userid = req.params.userid;
+    User.findByUserid(userid, function (err, user) {
+        if (err) throw err;
+        if (!user) {    //check the user available or not
+            res.json({ state: false, msg: "No user found..!" });
+            return;
+        }
+         User.findOne({ userid: userid })    //find user using userid
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(JSON.parse(data.vehicles));
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    })
+});
+
+/******************************************************** Available Technicians *******************************************************/
+
+router.get("/getTechnicians/:category", function (req, res, next) {
+    const expertise = req.params.category;
+    
+         User.find({ expertise: expertise })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
 
 module.exports = router; 
