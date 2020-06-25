@@ -20,6 +20,8 @@ router.post("/registerSupplier", function (req, res) {
             note: req.body.note,
             addedby:req.body.addedby,
             addedon:req.body.addedon,
+            lastmodifiedby:req.body.lastmodifiedby,
+            lastmodifiedon:req.body.lastmodifiedon,
             // filepath: fullPath,
         });
        // console.log(newSupplier)
@@ -93,10 +95,12 @@ router.post("/updateSupplier/:supid", function (req, res) {
         address: req.body.address,
         email: req.body.email,
         contactnumber: req.body.contactnumber,
-        items: req.body.item,
+        //items: req.body.item,
         note: req.body.note,
         addedby:req.body.addedby,
         addedon:req.body.addedon,
+        lastmodifiedby:req.body.lastmodifiedby,
+        lastmodifiedon:req.body.lastmodifiedon,
     }
     Supplier.update({ supid: supid }, { $set: input })    //update Supplier data with of the supid passed
         .exec()
