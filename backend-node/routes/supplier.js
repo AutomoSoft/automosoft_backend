@@ -68,7 +68,7 @@ router.get("/searchSuppliers/:supid", function (req, res, next) {
 
 router.get("/searchAllSuppliers", function (req, res, next) {
     
-    Supplier.find( {}, { supid: 1, usertype: 1, supname: 1, items: 1, contactnumber: 1, addedon: 1 } )
+    Supplier.find( {}, { supid: 1, usertype: 1, supname: 1, items: 1, contactnumber: 1, addedon: 1, email: 1 } )
         .select() 
         .exec()
         .then(data => {

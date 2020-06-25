@@ -16,6 +16,7 @@ const userSchema = mongoose.Schema({
     nicnumber: { type: String, require: true },
     expertise: { type: String, require: true },
     capacity: { type: String, require: true },
+    currentjobCap: { type: String, require: true },
     address: { type: String, require: true },
     addedby: { type: String, require: true },
     addedon: { type: String, require: true },
