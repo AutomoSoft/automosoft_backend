@@ -15,6 +15,8 @@ const supplierSchema = mongoose.Schema({
     note: { type: String, require: true },
     addedby: { type: String, require: true },
     addedon: { type: String, require: true },
+    lastmodifiedby: { type: String, require: true },
+    lastmodifiedon: { type: String, require: true },
 });
 
 const Suppliers = module.exports = mongoose.model("Suppliers", supplierSchema);
