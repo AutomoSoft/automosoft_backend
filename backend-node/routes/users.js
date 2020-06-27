@@ -277,25 +277,6 @@ router.get("/getVehicles/:userid", function (req, res, next) {
     })
 });
 
-/******************************************************** Available Technicians *******************************************************/
 
-router.get("/getTechnicians/:category", function (req, res, next) {
-    const expertise = req.params.category;
-    
-         User.find({ expertise: expertise })    
-            .select()
-            .exec()
-            .then(data => {
-                console.log("Data Transfer Success..!")
-                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-                
-
-            })
-            .catch(error => {
-                console.log("Data Transfer Unsuccessfull..!")
-                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
-            })
-    
-});
 
 module.exports = router; 
