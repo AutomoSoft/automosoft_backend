@@ -11,6 +11,7 @@ const env = require('dotenv').config();
 const { createServer } = require('http'); 
 const config = require('./config/database');
 const users = require('./routes/users');
+const technician = require('./routes/technician');
 const items = require('./routes/items');
 const mobileUser=require('./routes/mobileUser');
 
@@ -44,6 +45,10 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use('/users', users);
 app.use('/items', items);
 app.use('/supplier', supplier);
+
+app.use('/technician', technician);
+app.use('/contact' , contact);
+
 
 app.use('/contact' , contact);
 app.use('/mobile', mobileUser);

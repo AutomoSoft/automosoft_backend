@@ -26,7 +26,9 @@ router.post("/contactUs", (req, res, next) => {
         email: req.body.email,
         subject: req.body.subject,
         content: req.body.content,
+        addedon:req.body.addedon,
         isRead: false,
+        isArchived: false,
        
     });
     let mailOptions = {
@@ -56,6 +58,7 @@ router.post("/contactUs", (req, res, next) => {
                     error: err
                 });
             });
+            
 
 });
 router.get("/emails", (req, res, next) => {
@@ -69,6 +72,8 @@ router.get("/emails", (req, res, next) => {
     
 
 });
+/************************************************Mark As Read ***************************************************************/
+
 router.put("/isRead/:id", (req, res, next) => {
     Contact.findByIdAndUpdate(req.params.id,{
         $set: {isRead:true}
@@ -82,16 +87,80 @@ router.put("/isRead/:id", (req, res, next) => {
             result: result
         });
     });
-    /*Contact.find().then(result => {
+        
+    });
+    /************************************************Mark As UnRead ***************************************************************/
+
+    router.put("/unRead/:id", (req, res, next) => {
+        Contact.findByIdAndUpdate(req.params.id,{
+            $set: {isRead:false}
+        } , 
+        {
+            new: true
+        }
+        ).then(result => {
             res.status(200).json({
-                message:"messages fetched successfully",
+                message:"updated successfully",
                 result: result
             });
-        });*/
-        
+        });
+            
+        });
+    /************************************************Archive *********************************************************************/
+
+    router.put("/isArchived/:id", (req, res, next) => {
+        Contact.findByIdAndUpdate(req.params.id,{
+            $set: {isArchived:true}
+        } , 
+        {
+            new: true
+        }
+        ).then(result => {
+            res.status(200).json({
+                message:"updated successfully",
+                result: result
+            });
+        });
+            
+        });
+
+    /************************************************get all emails ***************************************************************/
+
+    router.get("/getAllEmails", function (req, res, next) {
+    
+        Contact.find( {}, { name: 1, email: 1, subject: 1, content: 1, isRead: 1, addedon: 1, isArchived: 1} )
+            .select() 
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(data);
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+            
+                })
+                .catch(error => {
+                    console.log("Data Transfer Unsuccessfull..!")
+                    res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+                })
     });
 
 
+/********************************************************Delete Email************************************************************************/
+
+//delete Email
+router.delete("/deleteEmail/:_id", function (req, res, next) {
+    const _id = req.params._id;
+    Contact.findOneAndRemove({ _id: _id })       //find supid and delete user
+        .exec()
+        .then(data => {
+            console.log("Successfully removed Email..!")
+            res.json({ state: true, msg: "Successfully removed Email..!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to remove  Data")
+            res.json({ state: false, msg: "Failed to remove Data" });
+        })
+})
 
 
 module.exports = router;

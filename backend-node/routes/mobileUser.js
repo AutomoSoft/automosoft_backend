@@ -97,7 +97,7 @@ router.get('/vehicales/:custid',function(req,res,next){
         .then(data => {
             console.log("Data Transfer Success..!")
             console.log(JSON.parse(data.vehicles));
-            res.json({data:JSON.parse(data.vehicles)});
+            res.json(JSON.parse(data.vehicles));
             
 
         })
@@ -113,12 +113,12 @@ router.get('/vehicales/:custid',function(req,res,next){
 router.get("/getTechnicians/:category", function (req, res, next) {
     const expertise = req.params.category;
     
-         User.find({ expertise: expertise },{_id:0, userid:1,currentjobCap:1,capacity:1,state: true})    
+         User.find({ expertise: expertise },{_id:0, userid:1,currentjobCap:1,capacity:1})    
             .select()
             .exec()
             .then(data => {
                 console.log("Data Transfer Success..!")
-                res.json({ state: true, msg: "Data Transfer Success..!", data });
+                res.json(data);
                 
 
             })
