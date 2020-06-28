@@ -12,7 +12,7 @@ const { createServer } = require('http');
 const config = require('./config/database');
 const users = require('./routes/users');
 const items = require('./routes/items');
-const mobileUser=require('./routes/mobileUserLogin');
+const mobileUser=require('./routes/mobileUser');
 
 const contact = require('./routes/contact');
 
