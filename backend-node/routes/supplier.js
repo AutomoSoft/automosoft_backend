@@ -5,7 +5,7 @@ const Supplier = require('../models/supplier');
 
 
 
-//supplier registration
+/******************************************************** Supplier Registration *******************************************************/
 
 router.post("/registerSupplier", function (req, res) {
     //console.log(req.body)
