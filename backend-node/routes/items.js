@@ -54,6 +54,44 @@ router.post("/registerItem", function (req, res) {
 });
 
 
+/******************************************************Search All Suppliers******************************************************************* */
+
+router.get("/searchAllItems", function (req, res, next) {
+    
+    Items.find( {}, { itemtype: 1, itemid: 1, buying: 1, selling: 1, addedby: 1, addedon: 1} )
+        .select() 
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+});
+
+/******************************************************Search All Items******************************************************************* */
+
+router.get("/searchAllSuppliers", function (req, res, next) {
+    
+    Supplier.find( {}, { supid: 1, usertype: 1, supname: 1, items: 1, contactnumber: 1, addedon: 1 } )
+        .select() 
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+});
+
 
 
 
