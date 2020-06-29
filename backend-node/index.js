@@ -14,13 +14,14 @@ const config = require('./config/database');
 const users = require('./routes/users');
 const technician = require('./routes/technician');
 const items = require('./routes/items');
+const mobileUser=require('./routes/mobileUser');
+
 const contact = require('./routes/contact');
 const supplier = require('./routes/supplier');
 const jobs = require('./routes/jobs');
 
 
-const mobileUser=require('./routes/mobile/mobileUserLogin.routes');
-const addJobCard=require('./routes/mobile/addJobCard.routes');
+
 
 
 app.use(cors());
@@ -44,14 +45,18 @@ app.use(express.static(path.join(__dirname,"public")));
 
 //mobile app routes
 app.use('/mobileUser',mobileUser);
-app.use('/addJobCard',addJobCard);
+//app.use('/addJobCard',addJobCard);
 
 app.use('/users', users);
 app.use('/items', items);
 app.use('/supplier', supplier);
+
 app.use('/technician', technician);
 app.use('/contact' , contact);
 app.use('/jobs' , jobs);
+
+app.use('/contact' , contact);
+app.use('/mobile', mobileUser);
 
 
 app.get("/", function(req,res) {
