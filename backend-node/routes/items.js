@@ -54,7 +54,7 @@ router.post("/registerItem", function (req, res) {
 });
 
 
-/******************************************************Search All Suppliers******************************************************************* */
+/******************************************************Search All Items******************************************************************* */
 
 router.get("/searchAllItems", function (req, res, next) {
     
@@ -73,7 +73,7 @@ router.get("/searchAllItems", function (req, res, next) {
             })
 });
 
-/******************************************************Search All Items******************************************************************* */
+/******************************************************Search All Suppliers******************************************************************* */
 
 router.get("/searchAllSuppliers", function (req, res, next) {
     
@@ -90,6 +90,34 @@ router.get("/searchAllSuppliers", function (req, res, next) {
                 console.log("Data Transfer Unsuccessfull..!")
                 res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
             })
+});
+
+/******************************************************** Search Item *******************************************************/
+
+router.get("/searchItem/:itemid", function (req, res, next) {
+    const itemid = req.body.itemid;
+    console.log(itemid);
+    Items.findByUserid(itemid, function (err, item) {
+        if (err) throw err;
+        if (!item) {    //check the item available or not
+            res.json({ state: false, msg: "No item found..!" });
+            return;
+        }
+         Item.findOne({ itemid: itemid })    //find item using itemid
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(JSON.parse(data.vehicles));
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    })
 });
 
 

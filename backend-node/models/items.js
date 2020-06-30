@@ -18,3 +18,13 @@ const itemSchema = mongoose.Schema({
 });
 
 const Items = module.exports = mongoose.model("Items", itemSchema);
+
+module.exports.findByItemid = function (itemid, callback) {       //  Function Copied by $ from users
+    const query = { itemid: itemid };
+
+    Items.findOne(query, callback);
+};
+
+module.exports.findItemById = function (id, callback) {             //  Function Copied by $ from users
+    Items.findOne(id, callback);    
+};
