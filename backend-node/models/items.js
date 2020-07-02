@@ -12,6 +12,7 @@ const itemSchema = mongoose.Schema({
     selling: { type: String, require: true },
     addedby: { type: String, require: true },
     addedon: { type: String, require: true },
+    storequantity: { type: Number, require: true },
     lastmodifiedby: { type: String, require: true },
     lastmodifiedon: { type: String, require: true },
     filepath: { type: String, require: true }

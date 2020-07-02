@@ -30,11 +30,12 @@ router.post("/registerItem", function (req, res) {
         var newItem = new Items({
             itemtype: req.body.itemtype,
             itemid: req.body.itemid,
-            itemname: req.body.firstName,
+            itemname: req.body.itemName,
             buying: req.body.buying,
             selling: req.body.selling,
             addedby:req.body.addedby,
             addedon:req.body.addedon,
+            storequantity:req.body.storequantity,
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
             filepath: fullPath,
@@ -120,8 +121,48 @@ router.get("/searchItem/:itemid", function (req, res, next) {
     })
 });
 
+router.get("/getItems/:category", function (req, res, next) {
+
+    const category = req.params.category;
+
+    Items.find( { itemtype: category }, { itemid: 1} )
+        .select()
+        .exec() 
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+});
+
+// /******************************************************** Add Items(Stock) to Store *******************************************************/
 
 
+router.post("/addStock", function (req, res) {
+    const itemid = req.body.itemId;
+    //console.log(itemid)
+
+
+    Items.updateOne({ itemid: itemid }, { $inc: { storequantity: req.body.quantity }})    
+    Items.updateOne({ itemid: itemid }, { $set: { lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon }})  
+    .select()
+    .exec()
+    .then(data => {
+        console.log("Data Transfer Success..!")
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+
+    })
+    .catch(error => {
+        console.log("Data Transfer Unsuccessfull..!")
+        res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+    })
+});
 
 
 module.exports = router; 
