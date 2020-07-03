@@ -6,7 +6,7 @@ const jobsSchema = mongoose.Schema({
     jobNo: { type: String, require: true, index: true, unique: true  },
     jobType: { type: String, require: true },
     custId: { type: String, require: true },
-    vehicle: { type: Array, require: true },
+    vehicle: { type: String, require: true },
     probCus: { type: String, require: true },
     foremanObv: { type: String, require: true },
     technicians: { type: Array, require: true },

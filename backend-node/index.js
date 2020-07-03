@@ -21,9 +21,6 @@ const supplier = require('./routes/supplier');
 const jobs = require('./routes/jobs');
 
 
-
-
-
 app.use(cors());
 const connection = mongoose.connect("mongodb+srv://Lalinda:Ucsc@123@cluster0-pvero.mongodb.net/AutomoSoft?retryWrites=true&w=majority",
 {
