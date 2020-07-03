@@ -22,6 +22,7 @@ let transporter = nodemailer.createTransport({
 
 router.post("/contactUs", (req, res, next) => {
     const contact = new Contact({
+        //_id:req.body._id,
         name: req.body.name,
         email: req.body.email,
         subject: req.body.subject,
@@ -161,6 +162,31 @@ router.delete("/deleteEmail/:_id", function (req, res, next) {
             res.json({ state: false, msg: "Failed to remove Data" });
         })
 })
+/***********************************************************GET ONE EMAIL********************************************************/
 
+router.get("/getOneEmail/:_id", function (req, res, next) {
+    const _id = req.params._id;
+    Contact.findById(_id, function (err, user) {
+        if (err) throw err;
+        if (!user) {    //check the user available or not
+            res.json({ state: false, msg: "No user found..!" });
+            return;
+        }
+         Contact.findOne({ _id: _id })    //find user using userid
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(JSON.parse(data.vehicles));
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    })
+});
 
 module.exports = router;
