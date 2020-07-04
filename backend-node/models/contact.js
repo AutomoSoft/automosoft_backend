@@ -8,8 +8,11 @@ const contactSchema = mongoose.Schema({
     subject: { type: String, require: true },
     content: { type: String, require: true },
     addedon: { type: String, require: true },
+    reply: { type: String},
     isRead: {type:Boolean},
     isArchived: {type:Boolean},
+    replySubject: {type: String},
+    replyMessage: {type:String},
     
 });
 

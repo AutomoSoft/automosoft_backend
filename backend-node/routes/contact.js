@@ -189,4 +189,47 @@ router.get("/getOneEmail/:_id", function (req, res, next) {
     })
 });
 
+
+router.post("/replyEmail", (req, res, next) => {
+    
+    const contact = new Contact({
+        email: req.body.email,
+        replySubject: req.body.replySubject,
+        replyMessage: req.body.replyMessage,
+    })
+    let mailOptions = {
+        from: contact.email,
+        to: contact.email,
+        subject: contact.replySubject,
+        text: contact.replyMessage,
+    }
+    
+        contact.save()
+            .then(result => {
+                console.log(result)
+                res.json({ state: true, msg: "Data Inserted Successfully..!" });
+
+                transporter.sendMail(mailOptions, function(err, data){
+                    if (err) {
+                        console.log('Error occurs!!!!', err);
+                    }
+                    else {
+                        console.log('email sent!!!');
+                    }
+                });
+            })
+            .catch(error => {
+                console.log(error)
+                res.json({ state: false, msg: "Error Try again...!!!" });
+            });
+
+            
+            
+
+});
+
+module.exports = router;
+
+
+
 module.exports = router;
