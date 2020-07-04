@@ -19,6 +19,7 @@ const mobileUser=require('./routes/mobileUser');
 const contact = require('./routes/contact');
 const supplier = require('./routes/supplier');
 const jobs = require('./routes/jobs');
+const reply = require('./routes/reply');
 
 
 app.use(cors());
@@ -53,6 +54,7 @@ app.use('/contact' , contact);
 app.use('/jobs' , jobs);
 
 app.use('/contact' , contact);
+app.use('/reply', reply);
 app.use('/mobile', mobileUser);
 
 
