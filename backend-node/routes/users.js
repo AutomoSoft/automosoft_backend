@@ -156,7 +156,8 @@ router.get("/profileImage/:filename", function (req, res) {
 
 router.post("/updateUser/:userid", function (req, res) {
     const userid = req.params.userid;
-    console.log(req.body)
+    // console.log(req.body)
+    // console.log(userid)
     const input = {
             usertype: req.body.usertype,
             userid: req.body.userid,
@@ -170,9 +171,9 @@ router.post("/updateUser/:userid", function (req, res) {
             address: req.body.address,
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
-            vehiclenumber: req.body.vehicleRegNo,
     }
-    User.update({ userid: userid }, { $set: input })    //update user data with of the userid passed
+    
+    User.updateOne({ userid: userid }, { $set: input })    //update user data with of the userid passed
         .exec()
         .then(data => {
             console.log("Data Updated Successfully!")
