@@ -7,6 +7,7 @@ const multer = require('multer');
 const bcrypt = require('bcryptjs');
 var path = require('path');
 const fs = require('fs');
+const StockWithdrawal = require('../models/stock-withdrawal');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
