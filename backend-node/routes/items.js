@@ -163,6 +163,47 @@ router.post("/addStock", function (req, res) {
         res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
     })
 });
+router.post("/withdrawStock", async function (req, res) {
+    const stockWithdraw = StockWithdrawal(req.body);
+    const items = req.body.items;
+  
+    const updatedItems = [];
+  
+    const promises = [];
+    items.forEach((item) => {
+      const { itemId, qty } = item;
+      promises.push(
+      Items.updateOne({ itemid: itemId }, {
+        $inc: { storequantity: -qty },
+        $set: { lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon }
+      }).exec()
+        .then(data => {
+          console.log("Data Transfer Successful..!")
+          updatedItems.push(data);
+        })
+        .catch(error => {
+          console.log("Data Transfer Unsuccessful..!")
+          console.log(error)
+        })
+      );
+    });
+  
+    await Promise.all(promises);
+  
+    if (items.length === updatedItems.length) {
+      stockWithdraw.save()      //save the item data
+        .then(result => {
+          console.log(result)
+          res.json({ state: true, msg: "Data Inserted Successfully..!" });
+        })
+        .catch(error => {
+          console.log(error)
+          res.json({ state: false, msg: "Data Inserting Unsuccessful..!" });
+        })
+    } else {
+      res.json({ state: false, msg: "Data Inserting Unsuccessful..!" });
+    }
+  });
 
 
 module.exports = router; 
