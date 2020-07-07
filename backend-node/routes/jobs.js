@@ -75,6 +75,27 @@ router.get("/getCurrentJobs", function (req, res) {
       })
   });
 
+  /******************************************************** Get Current Jobs *******************************************************/
+
+
+  router.get("/viewJob/:jobid", function (req, res, next) {
+    const jobNo = req.params.jobid;
+   
+        Job.findOne({ jobNo: jobNo })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Job Not Found!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
 
 
 module.exports = router; 
