@@ -11,7 +11,7 @@ const StockWithdrawal = require('../models/stock-withdrawal');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'local_storage/item_Images/')    //item images
+        cb(null, 'local_storage/item_images/')    //item images
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname)   //set the file neme
@@ -55,6 +55,12 @@ router.post("/registerItem", function (req, res) {
     });
 });
 
+//get item images
+router.get("/itemImage/:filename", function (req, res) {
+    const filename = req.params.filename;
+    //console.log(filename)
+    res.sendFile(path.join(__dirname, '../local_storage/item_images/' + filename));
+});
 
 /******************************************************Search All Items******************************************************************* */
 
