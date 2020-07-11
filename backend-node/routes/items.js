@@ -122,6 +122,21 @@ router.get("/searchItem/:itemid", function (req, res, next) {
     })
 });
 
+router.get("/searchItembyId/:itemid", function (req, res, next) {
+    const itemid = req.params.itemid;
+    console.log(req.params);
+    console.log(req.query);
+    Items.findOne({ itemid }, function (err, item) {
+        if (err) throw err;
+        if (!item) {    //check the item available or not
+            res.json({ state: false, msg: "No item found..!" });
+            return;
+        }
+          //find item using itemid
+        res.json({ state: true, data: item }) 
+    })
+});
+
 router.get("/getItems/:category", function (req, res, next) {
 
     const category = req.params.category;
