@@ -11,7 +11,7 @@ const StockWithdrawal = require('../models/stock-withdrawal');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'local_storage/item_Images/')    //item images
+        cb(null, 'local_storage/item_images/')    //item images
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname)   //set the file neme
@@ -55,6 +55,12 @@ router.post("/registerItem", function (req, res) {
     });
 });
 
+//get item images
+router.get("/itemImage/:filename", function (req, res) {
+    const filename = req.params.filename;
+    //console.log(filename)
+    res.sendFile(path.join(__dirname, '../local_storage/item_images/' + filename));
+});
 
 /******************************************************Search All Items******************************************************************* */
 
@@ -119,6 +125,21 @@ router.get("/searchItem/:itemid", function (req, res, next) {
                 console.log("Data Transfer Unsuccessfull..!")
                 res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
             })
+    })
+});
+
+router.get("/searchItembyId/:itemid", function (req, res, next) {
+    const itemid = req.params.itemid;
+    console.log(req.params);
+    console.log(req.query);
+    Items.findOne({ itemid }, function (err, item) {
+        if (err) throw err;
+        if (!item) {    //check the item available or not
+            res.json({ state: false, msg: "No item found..!" });
+            return;
+        }
+          //find item using itemid
+        res.json({ state: true, data: item }) 
     })
 });
 
@@ -208,3 +229,25 @@ router.post("/withdrawStock", async function (req, res) {
 
 
 module.exports = router; 
+
+/******************************************************** Available Items *******************************************************/
+
+//view available items for a particular item category
+router.get("/categorizeItems/:category", function (req, res, next) {
+    const itemtype = req.params.category;
+    
+         Items.find({ itemtype: itemtype })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
