@@ -229,3 +229,26 @@ router.post("/withdrawStock", async function (req, res) {
 
 
 module.exports = router; 
+
+/******************************************************** Available Items *******************************************************/
+
+//view available items for a particular item category
+router.get("/categorizeItems/:category", function (req, res, next) {
+    const itemtype = req.params.category;
+    
+         Items.find({ itemtype: itemtype })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data? Transfer Success..!")
+                console.log(data)
+                res.json({ state: true, msg: "Data? Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
