@@ -97,5 +97,30 @@ router.get("/getCurrentJobs", function (req, res) {
     
 });
 
+  /******************************************************** Update Job Status *******************************************************/
+
+  router.post("/updateStatus/:jobid", function (req, res) {
+    const jobNo = req.params.jobid;
+    //console.log(req.body.jobStatus)
+    //console.log(jobNo)
+ 
+    
+    Job.updateOne({ jobNo: jobNo }, { $set: { jobStatus: req.body.jobStatus, lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon}})  
+        .exec()
+        .then(data => {
+            console.log("Status Updated Successfully!")
+            res.json({ state: true, msg: "Data Updated Successfully!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to Update Status!!!")
+            res.json({ state: false, msg: "Failed to Update Data!!!" });
+        })
+});
+
+
+
+
+
 
 module.exports = router; 
