@@ -240,9 +240,8 @@ router.get("/categorizeItems/:category", function (req, res, next) {
             .select()
             .exec()
             .then(data => {
-                console.log("Data? Transfer Success..!")
-                console.log(data)
-                res.json({ state: true, msg: "Data? Transfer Success..!", data: data });
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
                 
 
             })
