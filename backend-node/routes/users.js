@@ -278,6 +278,36 @@ router.get("/getVehicles/:userid", function (req, res, next) {
     })
 });
 
+/******************************************************** Customer Add New Vehicle *******************************************************/
+
+router.post("/addnewVehicle/:userid", function (req, res) {
+    const userid = req.params.userid;
+    
+    const vehicles = req.body.vehicles;
+    // console.log(req.body)
+    // console.log(userid)
+    const input = {
+            lastmodifiedby:req.body.lastmodifiedby,
+            lastmodifiedon:req.body.lastmodifiedon,
+    }
+
+    console.log(input);
+
+    User.updateOne({ userid: userid }, { $push: { vehicles: vehicles } })
+    User.updateOne({ userid: userid }, { $set: input })
+
+        .exec()
+        .then(data => {
+            console.log("Data Updated Successfully!")
+            res.json({ state: true, msg: "Data Updated Successfully!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to Update Data!!!")
+            res.json({ state: false, msg: "Failed to Update Data!!!" });
+        })
+});
+
 
 
 module.exports = router; 
