@@ -105,13 +105,13 @@ router.get("/searchAllSuppliers", function (req, res, next) {
 router.get("/searchItem/:itemid", function (req, res, next) {
     const itemid = req.body.itemid;
     console.log(itemid);
-    Items.findByUserid(itemid, function (err, item) {
+    Items.findOne(itemid, function (err, item) {
         if (err) throw err;
         if (!item) {    //check the item available or not
             res.json({ state: false, msg: "No item found..!" });
             return;
         }
-         Item.findOne({ itemid: itemid })    //find item using itemid
+         Items.findOne({ itemid: itemid })    //find item using itemid
             .select()
             .exec()
             .then(data => {
