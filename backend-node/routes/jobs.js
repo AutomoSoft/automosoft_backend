@@ -43,7 +43,7 @@ router.post("/addNewJob", function (req, res) {
 
 router.get("/getOngoingJobs", function (req, res, next) {
     
-    Job.find( {$or: [ { jobStatus: "Queued" }, { jobStatus: "Started" },{ jobStatus: "Partially Completed" }, ] }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1 } )
+    Job.find( {$or: [ { jobStatus: "Queued" }, { jobStatus: "Started" },{ jobStatus: "Partially Completed" }, ] }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1} )
         .select()
         .exec() 
         .then(data => {
@@ -99,3 +99,25 @@ router.get("/getCurrentJobs", function (req, res) {
 
 
 module.exports = router; 
+
+/***************************************************************view technician jobs ********************************/
+router.get("/viewtechnicianJob/:techId", function (req, res, next) {
+    const techId = req.params.techId;
+    //const techID = "TEC001";
+    Job.find({'technicians':{$elemMatch:{$elemMatch:{$in:[techId]}}}})
+   
+    //Job.find( { technicians: "TEC001","2020-07-02T18:34:45.841Z" }) 
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Job Not Found!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});

@@ -11,8 +11,7 @@ const contactSchema = mongoose.Schema({
     reply: { type: String},
     isRead: {type:Boolean},
     isArchived: {type:Boolean},
-    replySubject: {type: String},
-    replyMessage: {type:String},
+   
     
 });
 
