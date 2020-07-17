@@ -134,6 +134,31 @@ router.delete("/deleteSupplier/:supid", function (req, res, next) {
         })
 })
 
+/******************************************************** Add new Supplier Item *******************************************************/
+
+router.post("/addNewItem", function (req, res) {
+    // console.log(req.body.item)
+
+    const input = {
+        lastmodifiedby:req.body.lastmodifiedby,
+        lastmodifiedon:req.body.lastmodifiedon,
+    }
+
+    Supplier.updateOne({ supid: req.body.supid }, { $push: {items: req.body.item} },{ $set: input })   
+    .exec()
+    .then(data => {
+        console.log("Data Updated Successfully!")
+        res.json({ state: true, msg: "Data Updated Successfully!" });
+
+    })
+    .catch(error => {
+        console.log("Failed to Update Data!!!")
+        res.json({ state: false, msg: "Failed to Update Data!!!" });
+    })
+    
+
+             
+});
 
 
 

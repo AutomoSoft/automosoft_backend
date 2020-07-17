@@ -90,10 +90,10 @@ router.post("/register", function (req, res) {
             addedon:req.body.addedon,
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
-            vehicles: req.body.vehicles,
+            vehicles: JSON.parse(req.body.vehicles),
             filepath: fullPath,
         });
-
+        
         bcrypt.genSalt(10, function (err, salt) {   //generate password salt
             bcrypt.hash(newUser.password, salt, function (err, hash) {  //hash the password 
                 newUser.password = hash;
@@ -285,16 +285,15 @@ router.post("/addnewVehicle/:userid", function (req, res) {
     
     const vehicles = req.body.vehicles;
     // console.log(req.body)
-    // console.log(userid)
+    // console.log(userid) 
     const input = {
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
     }
 
-    console.log(input);
+    //console.log(input);
 
-    User.updateOne({ userid: userid }, { $push: { vehicles: vehicles } })
-    User.updateOne({ userid: userid }, { $set: input })
+    User.updateOne({ userid: userid  }, { $push: {vehicles: req.body.vehicles} },{ $set: input })  
 
         .exec()
         .then(data => {
