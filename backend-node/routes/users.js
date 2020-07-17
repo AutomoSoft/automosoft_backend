@@ -244,6 +244,29 @@ router.get("/searchAllUsers", function (req, res, next) {
             })
 });
 
+/******************************************************** Search Users Category Wise *******************************************************/
+
+
+router.get("/categorizedUsers/:category", function (req, res, next) {
+    const usertype = req.params.category;
+    
+        User.find({ usertype: usertype })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
+
+
 //get user profile images
 router.get("/profileImage/:filename", function (req, res) {
     const filename = req.params.filename;
