@@ -146,3 +146,43 @@ router.get("/viewtechnicianJob/:techId", function (req, res, next) {
             })
     
 });
+
+/******************************************************************remove technician job ********************************************/
+router.get("/deleteTechnicianJob/:jobid", function (req, res, next) {
+    const jobNo = req.params.jobid;
+    //const techID = "TEC001";
+    Job.update({jobNo:jobNo },{ $pull: { technicians:{$elemMatch:{$elemMatch:{$in:["TEC001"]}} }} },
+        { multi: true }
+      )
+   
+    //Job.find( { technicians: "TEC001","2020-07-02T18:34:45.841Z" }) 
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Job Not Found!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
+/*****************************************************************Get completed jobs *****************************************************/
+router.get("/getCompletedJobs", function (req, res) {
+    Job.find( { jobStatus: "Completed" }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1, vehicle: 1, addedon: 1 } )
+      .select()
+      .exec()
+      .then(data => {
+        console.log("Data Transfer Success..!");
+        //console.log(data);
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+  
+      })
+      .catch(error => {
+        console.log("Data Transfer Unsuccessful..!");
+        res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+      })
+  });
