@@ -30,4 +30,25 @@ router.post("/makeReservation", function (req, res) {
             
     });
 
+
+    /******************************************************** View All Pending Reservations *******************************************************/
+
+    router.get("/viewAllPendingReservations", function (req, res, next) {
+        
+             Reservations.find({ status: "pending" })    
+                .select()
+                .exec()
+                .then(data => {
+                    console.log("Data Transfer Success..!")
+                    res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                    
+    
+                })
+                .catch(error => {
+                    console.log("Data Transfer Unsuccessfull..!")
+                    res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+                })
+        
+    });
+
     module.exports = router;
