@@ -5,7 +5,9 @@ const Reservations = require('../models/reservations');
 /******************************************************** Create a Reservation *******************************************************/
 
 router.post("/makeReservation", function (req, res) {
-    //console.log(req.body)
+    console.log("req.body")
+    console.log(JSON.stringify(req.body));
+    
     var newReservation = new Reservations({
         custID: req.body.custID,
         daterequested: req.body.daterequested,
@@ -27,3 +29,5 @@ router.post("/makeReservation", function (req, res) {
 
             
     });
+
+    module.exports = router;

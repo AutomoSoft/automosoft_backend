@@ -58,6 +58,7 @@ app.use('/contact' , contact);
 app.use('/reply', reply);
 app.use('/mobile', mobileUser);
 
+app.use('/reservations', reservations);
 
 app.get("/", function(req,res) {
     //res.send("Hello world");

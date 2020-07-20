@@ -11,4 +11,4 @@ const reservationSchema = mongoose.Schema({
     status: { type: String, require: true },
 });
 
-const reservations = module.exports = mongoose.model("reservations", reservationSchema );
+const Reservations = module.exports = mongoose.model("Reservations", reservationSchema );
