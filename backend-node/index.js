@@ -20,6 +20,7 @@ const contact = require('./routes/contact');
 const supplier = require('./routes/supplier');
 const jobs = require('./routes/jobs');
 const reply = require('./routes/reply');
+const reservations = require('./routes/reservations');
 
 
 app.use(cors());
