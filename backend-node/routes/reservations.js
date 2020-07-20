@@ -28,48 +28,90 @@ router.post("/makeReservation", function (req, res) {
         })
 
             
-    });
-
-
-    /******************************************************** View All Pending Reservations *******************************************************/
-
-    router.get("/viewAllPendingReservations", function (req, res, next) {
-        
-             Reservations.find({ status: "pending" })    
-                .select()
-                .exec()
-                .then(data => {
-                    console.log("Data Transfer Success..!")
-                    res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-                    
-    
-                })
-                .catch(error => {
-                    console.log("Data Transfer Unsuccessfull..!")
-                    res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
-                })
-        
-    });
-
-
-    /******************************************************** View All Reservations *******************************************************/
-
-    router.get("/viewAllReservations", function (req, res, next) {
-        
-        Reservations.find({},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
-           .select()
-           .exec()
-           .then(data => {
-               console.log("Data Transfer Success..!")
-               res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-               
-
-           })
-           .catch(error => {
-               console.log("Data Transfer Unsuccessfull..!")
-               res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
-           })
-   
 });
 
-    module.exports = router;
+
+/******************************************************** View All Pending Reservations *******************************************************/
+
+router.get("/viewAllPendingReservations", function (req, res, next) {
+    
+    Reservations.find({ status: "pending" })    
+    .select()
+    .exec()
+    .then(data => {
+        console.log("Data Transfer Success..!")
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+
+    })
+    .catch(error => {
+        console.log("Data Transfer Unsuccessfull..!")
+        res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+    })
+    
+});
+
+
+/******************************************************** View All Reservations *******************************************************/
+
+router.get("/viewAllReservations", function (req, res, next) {
+    
+    Reservations.find({},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+            
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessfull..!")
+            res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+        })
+
+});
+
+
+
+/******************************************************** View Reservations Job Category Wise *******************************************************/
+
+router.get("/getReservations/:category", function (req, res, next) {
+
+    const category = req.params.category;
+
+    if(category=="all"){          
+        Reservations.find({},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+
+    }else{                                                                         
+        Reservations.find({ repairtype: category })    
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+            
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessfull..!")
+            res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+        })
+    }
+    
+});
+
+    
+module.exports = router;
