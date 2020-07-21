@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Job = require('../models/jobs');
 
+const Nexmo = require('nexmo')
+ 
+const nexmo = new Nexmo({
+  apiKey: "1fea229b",
+  apiSecret: "ECJ8E37RzBi50jlt"
+})
+
 /******************************************************** Add New Job *******************************************************/
 
 router.post("/addNewJob", function (req, res) {
@@ -186,3 +193,48 @@ router.get("/getCompletedJobs", function (req, res) {
         res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
       })
   });
+
+  /*****************************************************************send sms *******************************************************/
+router.post("/sendSMS", function(req, res){
+    
+      
+    var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
+    var authToken = "839ae2139565ec8d7c5a54366af865ca";
+
+    var twilio = require("twilio");
+    var client = new twilio(accountId, authToken);
+    
+    client.messages.create({
+        body: "Hello From AutomoSoft",
+        to: "+94778024051",
+        from:"+16183703018",
+    })
+    .then(data => {
+        console.log("SMS was sent..!");
+        //console.log(data);
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+  
+      })
+      .catch(error => {
+        console.log("Data Transfer Unsuccessful..!");
+        res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+      })
+})
+router.post("/nexmo", function(req, res){
+    let text = "Whatevr"
+ 
+        nexmo.message.sendSms("Nexmo",+94778024051, text, {
+        type: "unicode"
+        }, (err, responseData) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (responseData.messages[0]['status'] === "0") {
+            console.log("Message sent successfully.");
+            } else {
+            console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
+            }
+        }
+})
+
+});
