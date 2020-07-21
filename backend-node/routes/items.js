@@ -185,10 +185,12 @@ router.post("/addStock", function (req, res) {
         res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
     })
 });
+
+ /******************************************************** Withdraw stock for Jobs *******************************************************/
+
 router.post("/withdrawStock", async function (req, res) {
     const stockWithdraw = StockWithdrawal(req.body);
     const items = req.body.items;
-  
     const updatedItems = [];
   
     const promises = [];
@@ -228,26 +230,27 @@ router.post("/withdrawStock", async function (req, res) {
   });
 
 
-module.exports = router; 
+  
+  /******************************************************** Available Items *******************************************************/
+  
+  //view available items for a particular item category
+  router.get("/categorizeItems/:category", function (req, res, next) {
+      const itemtype = req.params.category;
+      
+      Items.find({ itemtype: itemtype })    
+      .select()
+      .exec()
+      .then(data => {
+          console.log("Data Transfer Success..!")
+          res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+          
+          
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessfull..!")
+            res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+        })
+        
+    });
 
-/******************************************************** Available Items *******************************************************/
-
-//view available items for a particular item category
-router.get("/categorizeItems/:category", function (req, res, next) {
-    const itemtype = req.params.category;
-    
-         Items.find({ itemtype: itemtype })    
-            .select()
-            .exec()
-            .then(data => {
-                console.log("Data Transfer Success..!")
-                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-                
-
-            })
-            .catch(error => {
-                console.log("Data Transfer Unsuccessfull..!")
-                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
-            })
-    
-});
+    module.exports = router; 
