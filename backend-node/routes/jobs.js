@@ -125,12 +125,28 @@ router.get("/getCurrentJobs", function (req, res) {
         })
 });
 
+/******************************************************** Update Job Items *******************************************************/
+
+router.post("/addJobItems", function (req, res) {
+    const items = req.body.items;
+    const jobNo = req.body.jobNo;
+    console.log(req.body.items)
+
+    Job.updateOne({ jobNo: jobNo }, { $push: {itemsUsed: req.body.items} }, {$set: { lastmodifiedby: req.body.foremanid, lastmodifiedon: req.body.date}})  
+        .exec()
+        .then(data => {
+            console.log("Status Updated Successfully!")
+            res.json({ state: true, msg: "Data Updated Successfully!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to Update Status!!!")
+            res.json({ state: false, msg: "Failed to Update Data!!!" });
+        })
+});
 
 
 
-
-
-module.exports = router; 
 
 /***************************************************************view technician jobs ********************************/
 router.get("/viewtechnicianJob/:techId", function (req, res, next) {
@@ -238,3 +254,18 @@ router.post("/nexmo", function(req, res){
 })
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  module.exports = router; 
