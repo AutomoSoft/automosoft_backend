@@ -192,8 +192,10 @@ router.post("/withdrawStock", async function (req, res) {
     const stockWithdraw = StockWithdrawal(req.body);
     const items = req.body.items;
     const updatedItems = [];
-  
-    const promises = [];
+    
+    console.log(items)
+
+    const promises = [];    
     items.forEach((item) => {
       const { itemId, qty } = item;
       promises.push(
@@ -210,6 +212,8 @@ router.post("/withdrawStock", async function (req, res) {
           console.log(error)
         })
       );
+
+
     });
   
     await Promise.all(promises);

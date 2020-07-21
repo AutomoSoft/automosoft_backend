@@ -11,7 +11,8 @@ const stockWithdrawalSchema = mongoose.Schema({
     {
       itemtype: { type: String, require: true },
       itemId: { type: String, require: true },
-      qty: { type: Number, require: true }
+      qty: { type: Number, require: true },
+      charge: { type: Number, require: true }
     }
   ]
 });
