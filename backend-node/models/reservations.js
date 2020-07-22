@@ -4,6 +4,7 @@ const Schema = mongoose.schema;
 
 const reservationSchema = mongoose.Schema({
     custID: { type: String, require: true },
+    dateposted: {type: String, require: true},
     daterequested: { type: String, require: true },
     time: { type: String, require: true},
     repairtype: { type: String, require: true },

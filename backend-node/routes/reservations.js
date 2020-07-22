@@ -10,6 +10,7 @@ router.post("/makeReservation", function (req, res) {
     
     var newReservation = new Reservations({
         custID: req.body.custID,
+        dateposted: req.body.dateposted,
         daterequested: req.body.daterequested,
         time: req.body.time,
         repairtype: req.body.repairtype,
@@ -56,7 +57,7 @@ router.get("/viewAllPendingReservations", function (req, res, next) {
 
 router.get("/viewAllReservations", function (req, res, next) {
     
-    Reservations.find({},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
+    Reservations.find({},{custID:1, dateposted:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
         .select()
         .exec()
         .then(data => {
