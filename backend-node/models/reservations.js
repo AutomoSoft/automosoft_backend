@@ -4,6 +4,7 @@ const Schema = mongoose.schema;
 
 const reservationSchema = mongoose.Schema({
     custID: { type: String, require: true },
+    dateposted: {type: String, require: true},
     daterequested: { type: String, require: true },
     time: { type: String, require: true},
     repairtype: { type: String, require: true },
@@ -12,3 +13,9 @@ const reservationSchema = mongoose.Schema({
 });
 
 const Reservations = module.exports = mongoose.model("Reservations", reservationSchema );
+
+module.exports.findByReservationid = function (reservationid, callback) {
+    const query = { _id: reservationid };
+
+    Reservations.findOne(query, callback);
+};

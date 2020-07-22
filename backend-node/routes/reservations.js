@@ -10,6 +10,7 @@ router.post("/makeReservation", function (req, res) {
     
     var newReservation = new Reservations({
         custID: req.body.custID,
+        dateposted: req.body.dateposted,
         daterequested: req.body.daterequested,
         time: req.body.time,
         repairtype: req.body.repairtype,
@@ -56,7 +57,7 @@ router.get("/viewAllPendingReservations", function (req, res, next) {
 
 router.get("/viewAllReservations", function (req, res, next) {
     
-    Reservations.find({},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
+    Reservations.find({},{custID:1, dateposted:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
         .select()
         .exec()
         .then(data => {
@@ -111,6 +112,33 @@ router.get("/getReservations/:category", function (req, res, next) {
         })
     }
     
+});
+
+
+/******************************************************** Search Reservation by id *******************************************************/
+
+router.get("/findReservation/:reserv_id", function (req, res, next) {
+    const reservation_id = req.params.reserv_id;
+    Reservations.findByReservationid(reservation_id, function (err, reservation) {
+        if (err) throw err;
+        if (!reservation) {    //check the reservation available or not
+            res.json({ state: false, msg: "No user found..!" });
+            return;
+        }
+         Reservations.findOne({ _id: reservation_id })    //find reservation using userid
+            .select() 
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(data);
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    })
 });
 
     
