@@ -13,3 +13,9 @@ const reservationSchema = mongoose.Schema({
 });
 
 const Reservations = module.exports = mongoose.model("Reservations", reservationSchema );
+
+module.exports.findByReservationid = function (reservationid, callback) {
+    const query = { _id: reservationid };
+
+    Reservations.findOne(query, callback);
+};

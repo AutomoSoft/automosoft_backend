@@ -114,5 +114,32 @@ router.get("/getReservations/:category", function (req, res, next) {
     
 });
 
+
+/******************************************************** Search Reservation by id *******************************************************/
+
+router.get("/findReservation/:reserv_id", function (req, res, next) {
+    const reservation_id = req.params.reserv_id;
+    Reservations.findByReservationid(reservation_id, function (err, reservation) {
+        if (err) throw err;
+        if (!reservation) {    //check the reservation available or not
+            res.json({ state: false, msg: "No user found..!" });
+            return;
+        }
+         Reservations.findOne({ _id: reservation_id })    //find reservation using userid
+            .select() 
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(data);
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    })
+});
+
     
 module.exports = router;
