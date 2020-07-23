@@ -262,7 +262,7 @@ router.post("/sendSMS", function(req, res){
 router.post("/nexmo", function(req, res){
     let text = "Whatevr"
  
-        nexmo.message.sendSms("Nexmo",+94778024051, text, {
+        nexmo.message.sendSms("Nexmo",req.body.contactnumber, req.body.custId, {
         type: "unicode"
         }, (err, responseData) => {
         if (err) {
