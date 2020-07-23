@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Job = require('../models/jobs');
 
+const Nexmo = require('nexmo')
+ 
+const nexmo = new Nexmo({
+  apiKey: "1fea229b",
+  apiSecret: "ECJ8E37RzBi50jlt"
+})
+
 /******************************************************** Add New Job *******************************************************/
 
 router.post("/addNewJob", function (req, res) {
@@ -43,7 +50,7 @@ router.post("/addNewJob", function (req, res) {
 
 router.get("/getOngoingJobs", function (req, res, next) {
     
-    Job.find( {$or: [ { jobStatus: "Queued" }, { jobStatus: "Started" },{ jobStatus: "Partially Completed" }, ] }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1} )
+    Job.find( {$or: [ { jobStatus: "Queued" }, { jobStatus: "Started" },{ jobStatus: "Partially Completed" }, { jobStatus: "Halfway" }] }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1} )
         .select()
         .exec() 
         .then(data => {
@@ -100,13 +107,18 @@ router.get("/getCurrentJobs", function (req, res) {
   /******************************************************** Update Job Status *******************************************************/
 
   router.post("/updateStatus/:jobid", function (req, res) {
+    var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
+    var authToken = "839ae2139565ec8d7c5a54366af865ca";
+
+    var twilio = require("twilio");
+    var client = new twilio(accountId, authToken);
     const jobNo = req.params.jobid;
     //console.log(req.body.jobStatus)
     //console.log(jobNo)
  
     
     Job.updateOne({ jobNo: jobNo }, { $set: { jobStatus: req.body.jobStatus, lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon}})  
-        .exec()
+    .exec()
         .then(data => {
             console.log("Status Updated Successfully!")
             res.json({ state: true, msg: "Data Updated Successfully!" });
@@ -116,16 +128,33 @@ router.get("/getCurrentJobs", function (req, res) {
             console.log("Failed to Update Status!!!")
             res.json({ state: false, msg: "Failed to Update Data!!!" });
         })
+        client.messages.create({
+            body: "\n"+req.body.custId +", "+"\n"+ req.body.jobNo +" has been "+req.body.jobStatus,
+            to: req.body.contactnumber,
+            from:"+16183703018",
+        }) 
+        .then(data => {
+            console.log("SMS was sent..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+      
+          })
+          .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+          })   
 });
 
 /******************************************************** Update Job Items *******************************************************/
 
 router.post("/addJobItems", function (req, res) {
+    
+
     const items = req.body.items;
     const jobNo = req.body.jobNo;
     console.log(req.body.items)
 
-    Job.updateOne({ jobNo: jobNo }, { $push: {itemsUsed: req.body.items} }, {$set: { lastmodifiedby: req.body.foremanid, lastmodifiedon: req.body.date}})  
+    Job.updateOne({ jobNo: jobNo }, { $push: {itemsUsed: req.body.items} }, {$set: { lastmodifiedby: req.body.foremanid, lastmodifiedon: req.body.date}})
         .exec()
         .then(data => {
             console.log("Status Updated Successfully!")
@@ -188,7 +217,7 @@ router.get("/deleteTechnicianJob/:jobid", function (req, res, next) {
 });
 /*****************************************************************Get completed jobs *****************************************************/
 router.get("/getCompletedJobs", function (req, res) {
-    Job.find( { jobStatus: "Completed" }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1, vehicle: 1, addedon: 1 } )
+    Job.find( { jobStatus: "Completed"})
       .select()
       .exec()
       .then(data => {
@@ -203,6 +232,61 @@ router.get("/getCompletedJobs", function (req, res) {
       })
   });
 
+  /*****************************************************************send sms *******************************************************/
+router.post("/sendSMS", function(req, res){
+    console.log(req.body)
+
+        /*var newJob = new Job({
+            jobNo: req.body.jobNo,
+            //jobType: req.body.jobType,
+            //custId: req.body.custId,
+            jobStatus:req.body.jobStatus,
+            custNo:req.body.custNo
+        });
+        console.log(newJob)
+       newJob.save()  */    
+    
+      
+    var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
+    var authToken = "839ae2139565ec8d7c5a54366af865ca";
+
+    var twilio = require("twilio");
+    var client = new twilio(accountId, authToken);
+    
+    client.messages.create({
+        body: req.body.jobStatus,
+        to: "+94778024051",
+        from:"+16183703018",
+    })
+    .then(data => {
+        console.log("SMS was sent..!");
+        //console.log(data);
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+  
+      })
+      .catch(error => {
+        console.log("Data Transfer Unsuccessful..!");
+        res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+      })
+})
+router.post("/nexmo", function(req, res){
+    let text = "Whatevr"
+ 
+        nexmo.message.sendSms("Nexmo",+94778024051, text, {
+        type: "unicode"
+        }, (err, responseData) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (responseData.messages[0]['status'] === "0") {
+            console.log("Message sent successfully.");
+            } else {
+            console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
+            }
+        }
+})
+
+});
 
 
 
