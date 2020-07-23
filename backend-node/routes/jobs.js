@@ -132,7 +132,7 @@ router.get("/getCurrentJobs", function (req, res) {
             body: "\n"+req.body.custId +", "+"\n"+ req.body.jobNo +" has been "+req.body.jobStatus,
             to: req.body.contactnumber,
             from:"+16183703018",
-        }) 
+        }) //send message to the relevent customer contact number
         .then(data => {
             console.log("SMS was sent..!");
             //console.log(data);
@@ -234,17 +234,7 @@ router.get("/getCompletedJobs", function (req, res) {
 
   /*****************************************************************send sms *******************************************************/
 router.post("/sendSMS", function(req, res){
-    console.log(req.body)
-
-        /*var newJob = new Job({
-            jobNo: req.body.jobNo,
-            //jobType: req.body.jobType,
-            //custId: req.body.custId,
-            jobStatus:req.body.jobStatus,
-            custNo:req.body.custNo
-        });
-        console.log(newJob)
-       newJob.save()  */    
+    console.log(req.body)   
     
       
     var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
