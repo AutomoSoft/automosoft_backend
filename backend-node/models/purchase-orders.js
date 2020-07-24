@@ -3,9 +3,9 @@ const Schema = mongoose.schema;
 
 const purchaseOrdersSchema = mongoose.Schema({
     dateApplied: { type: String, require: true },
-    itemID: { type: String, require: true, index: true, unique: true },
+    itemid: { type: String, require: true },
     quantity: { type: Number, require: true },
-    supplierID: { type: String, require: true },
+    supplierid: { type: String, require: true },
     dateReceived: { type: String, require: true },
     lastmodifiedby: { type: String, require: true },
     lastmodifiedon: { type: String, require: true },

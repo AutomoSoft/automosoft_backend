@@ -6,14 +6,14 @@ const purchaseOrders = require('../models/purchase-orders');
 /******************************************************** Request quantity *******************************************************/
 
 router.post("/requestQuantity", function (req, res) {
-    //console.log(req.body)
+    console.log(req.body)
     var newpurchaseOrders = new purchaseOrders({
         dateApplied:new Date(),
-        itemID: req.body.itemID,
+        itemid: req.body.itemid,
         quantity: req.body.quantity,
-        supplierID:null,
+        supplierid:null,
         dateReceived:null,
-        lastmodifiedby: req.body.userID,
+        lastmodifiedby: req.body.userid,
         lastmodifiedon: new Date(),
         status:0,
     });
@@ -31,4 +31,4 @@ router.post("/requestQuantity", function (req, res) {
 
 });
 
-
+module.exports = router; 

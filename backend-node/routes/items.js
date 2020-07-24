@@ -66,7 +66,7 @@ router.get("/itemImage/:filename", function (req, res) {
 
 router.get("/searchAllItems", function (req, res, next) {
     
-    Items.find( {}, { itemtype: 1, itemid: 1,itemname: 1,storequantity: 1,lastmodifiedby: 1, lastmodifiedon: 1,buying: 1, selling: 1, addedby: 1, addedon: 1} )
+    Items.find( {}, { itemtype: 1, itemid: 1,itemname: 1,storequantity: 1,lastmodifiedby: 1, lastmodifiedon: 1,buying: 1, selling: 1, addedby: 1, addedon: 1, filepath: 1} )
         .select() 
         .exec()
         .then(data => {

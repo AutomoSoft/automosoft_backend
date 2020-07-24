@@ -21,6 +21,7 @@ const supplier = require('./routes/supplier');
 const jobs = require('./routes/jobs');
 const reply = require('./routes/reply');
 const reservations = require('./routes/reservations');
+const purchaseOrders = require('./routes/purchaseOrders');
 
 
 app.use(cors());
@@ -59,6 +60,7 @@ app.use('/reply', reply);
 app.use('/mobile', mobileUser);
 
 app.use('/reservations', reservations);
+app.use('/purchaseOrders', purchaseOrders);
 
 app.get("/", function(req,res) {
     //res.send("Hello world");
