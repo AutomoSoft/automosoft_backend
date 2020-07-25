@@ -23,6 +23,8 @@ const reply = require('./routes/reply');
 const reservations = require('./routes/reservations');
 const purchaseOrders = require('./routes/purchaseOrders');
 
+const invoice = require('./routes/invoice');
+
 
 app.use(cors());
 const connection = mongoose.connect("mongodb+srv://Lalinda:Ucsc@123@cluster0-pvero.mongodb.net/AutomoSoft?retryWrites=true&w=majority",
@@ -54,6 +56,8 @@ app.use('/supplier', supplier);
 app.use('/technician', technician);
 app.use('/contact' , contact);
 app.use('/jobs' , jobs);
+
+app.use('/invoice' ,invoice );
 
 app.use('/contact' , contact);
 app.use('/reply', reply);
