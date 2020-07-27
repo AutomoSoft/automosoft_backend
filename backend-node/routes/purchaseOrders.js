@@ -31,7 +31,6 @@ router.post("/requestQuantity", function (req, res) {
 
 });
 
-
 /******************************************************** Get Pending Orders *******************************************************/
 router.get("/getPendingOrders", function (req, res) {
     console.log("dds");
@@ -50,5 +49,21 @@ router.get("/getPendingOrders", function (req, res) {
       })
   });
 
+/******************************************************** Approve Orders *******************************************************/  
+router.put("/approveOrder", function (req, res) {
+  purchaseOrders.update( { status:1 }, {} )
+    .select()
+    .exec()
+    .then(data => {
+      console.log("Data Transfer Success..!");
+      //console.log(data);
+      res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+    })
+    .catch(error => {
+      console.log("Data Transfer Unsuccessful..!");
+      res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+    })
+});
 
 module.exports = router; 
