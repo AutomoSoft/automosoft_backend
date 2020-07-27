@@ -75,14 +75,14 @@ router.get("/viewAllReservations", function (req, res, next) {
 
 
 
-/******************************************************** View Reservations Job Category Wise *******************************************************/
+/******************************************************** View All Pending Reservations Job Category Wise *******************************************************/
 
 router.get("/getReservations/:category", function (req, res, next) {
 
     const category = req.params.category;
 
     if(category=="all"){          
-        Reservations.find({},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
+        Reservations.find({"status": "pending"},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
             .select()
             .exec()
             .then(data => {
@@ -115,7 +115,7 @@ router.get("/getReservations/:category", function (req, res, next) {
 });
 
 
-/******************************************************** Search Reservation by id *******************************************************/
+/******************************************************** Search All Reservations by id *******************************************************/
 
 router.get("/findReservation/:reserv_id", function (req, res, next) {
     const reservation_id = req.params.reserv_id;
@@ -139,6 +139,31 @@ router.get("/findReservation/:reserv_id", function (req, res, next) {
                 res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
             })
     })
+});
+
+
+/******************************************************** View All Accepted Reservations For The Date *******************************************************/
+
+router.get("/viewAcceptedReservationsForTheDate/:date", function (req, res, next) {
+
+    const date = req.params.date;
+
+                                                                      
+    Reservations.find({ "daterequested": date, "status": "accepted" })    
+    .select()
+    .exec()
+    .then(data => {
+        console.log("Data Transfer Success..!")
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+
+    })
+    .catch(error => {
+        console.log("Data Transfer Unsuccessfull..!")
+        res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+    })
+    
+    
 });
 
     
