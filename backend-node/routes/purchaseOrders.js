@@ -51,7 +51,8 @@ router.get("/getPendingOrders", function (req, res) {
 
 /******************************************************** Approve Orders *******************************************************/  
 router.put("/approveOrder", function (req, res) {
-  purchaseOrders.update( { status:1 }, {} )
+  const id = req.body._id;
+  purchaseOrders.updateOne( {_id:id}, {status :1},{new:true})
     .select()
     .exec()
     .then(data => {
