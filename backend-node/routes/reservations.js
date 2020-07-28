@@ -53,6 +53,27 @@ router.get("/viewAllPendingReservations", function (req, res, next) {
 });
 
 
+/******************************************************** View All Accepted Reservations *******************************************************/
+
+router.get("/viewAllAcceptedReservations", function (req, res, next) {
+    
+    Reservations.find({ status: "accepted" })    
+    .select()
+    .exec()
+    .then(data => {
+        console.log("Data Transfer Success..!")
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+
+    })
+    .catch(error => {
+        console.log("Data Transfer Unsuccessfull..!")
+        res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+    })
+    
+});
+
+
 /******************************************************** View All Reservations *******************************************************/
 
 router.get("/viewAllReservations", function (req, res, next) {
@@ -97,7 +118,47 @@ router.get("/getReservations/:category", function (req, res, next) {
             })
 
     }else{                                                                         
-        Reservations.find({ repairtype: category })    
+        Reservations.find({ repairtype: category, status: "pending"})    
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+            
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessfull..!")
+            res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+        })
+    }
+    
+});
+
+
+/******************************************************** View All Accepted Reservations Job Category Wise *******************************************************/
+
+router.get("/getAcceptedReservations/:category", function (req, res, next) {
+
+    const category = req.params.category;
+
+    if(category=="all"){          
+        Reservations.find({"status": "accepted"},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+
+    }else{                                                                         
+        Reservations.find({ repairtype: category, status:"accepted"})    
         .select()
         .exec()
         .then(data => {
