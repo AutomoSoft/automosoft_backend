@@ -31,8 +31,9 @@ router.post("/addNewJob", function (req, res) {
             subTotal:'0',
             tax:'0',
             grandTotal:'0',
-            amountPaid:'0',
+            amountPaid: 0,
             balance:'0',
+            lastpaymentdate:' ',
             jobStatus:req.body.jobStatus,
         });
         console.log(newJob)
@@ -288,14 +289,11 @@ router.post("/nexmo", function(req, res){
 router.post("/updateCharges", function (req, res) {
     
     const jobNo = req.body.jobNo;
-    console.log(req.body.items)
+    console.log(req.body.balance)
 
-    Job.updateOne({ jobNo: jobNo },  {$set: { subTotal: req.body.subTotal, 
-                                              tax: req.body.tax, 
-                                              grandTotal: req.body.grandTotal, 
-                                              amountPaid: req.body.amountPaid, 
-                                              balance: req.body.balance
-                                            }})
+    Job.updateOne({ jobNo: jobNo },  {
+        $set: { subTotal: req.body.subTotal, tax: req.body.tax, grandTotal: req.body.grandTotal, balance: req.body.balance, lastpaymentdate: req.body.invoiceDate },
+        $inc: { amountPaid: req.body.amountPaid }})
         .exec()
         .then(data => {
             console.log("Job Details Updated Successfully!")

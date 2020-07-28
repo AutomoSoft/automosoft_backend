@@ -5,7 +5,6 @@ const Schema = mongoose.schema;
 const invoiceSchema = mongoose.Schema({
     invoiceNo: { type: String, require: true, index: true, unique: true  },
     invoiceDate: { type: String, require: true },
-    po: { type: String, require: true },
     jobNo:{type: String, require: true},
     jobDate: { type: String, require: true },
     custId: { type: String, require: true },

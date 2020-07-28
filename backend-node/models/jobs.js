@@ -18,10 +18,11 @@ const jobsSchema = mongoose.Schema({
     lastmodifiedon: { type: String, require: true },
     estCharge: { type: Number, require: true },
     subTotal: { type: Number, require: true },  //charge without tax
-    tax: { type: Number, require: true },
+    tax: { type: Number, require: true },       //fixed tax rate
     grandTotal: { type: Number, require: true },
-    amountPaid: { type: Number, require: true },
-    balance: { type: Number, require: true },   
+    amountPaid: { type: Number, require: true }, //amount paid of total
+    balance: { type: Number, require: true },    //balance remaining to pay
+    lastpaymentdate: { type: String, require: true },
     jobStatus: { type: String, require: true }
 });
 
