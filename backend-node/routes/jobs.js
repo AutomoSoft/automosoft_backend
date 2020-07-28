@@ -28,8 +28,11 @@ router.post("/addNewJob", function (req, res) {
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
             estCharge:req.body.estCharge,
-            amountPaid:req.body.amountPaid,
-            balance:req.body.balance,
+            subTotal:'0',
+            tax:'0',
+            grandTotal:'0',
+            amountPaid:'0',
+            balance:'0',
             jobStatus:req.body.jobStatus,
         });
         console.log(newJob)
