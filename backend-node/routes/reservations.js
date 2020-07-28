@@ -166,5 +166,29 @@ router.get("/viewAcceptedReservationsForTheDate/:date", function (req, res, next
     
 });
 
+/******************************************************** Accept a Reservation *******************************************************/
+
+router.post("/acceptReservation/:resevid", function (req, res) {
+    const resevid = req.params.resevid;
+    //  console.log(req.body);
+    //  console.log(resevid);
+    const input = {
+            foremanid: req.body.foremanid,
+            dateaccepted: req.body.dateaccepted,
+            status: "accepted",
+    }
+    
+    Reservations.updateOne({ _id: resevid }, { $set: input })    //update reservation data with of the resevid passed
+        .exec()
+        .then(data => {
+            console.log("Data Updated Successfully!")
+            res.json({ state: true, msg: "Data Updated Successfully!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to Update Data!!!")
+            res.json({ state: false, msg: "Failed to Update Data!!!" });
+        })
+});
     
 module.exports = router;
