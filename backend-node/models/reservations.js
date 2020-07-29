@@ -21,3 +21,9 @@ module.exports.findByReservationid = function (reservationid, callback) {
 
     Reservations.findOne(query, callback);
 };
+
+module.exports.findByCustomerid = function (customer_id, callback) {
+    const query = { custID: customer_id };
+
+    Reservations.findOne(query, callback);
+};

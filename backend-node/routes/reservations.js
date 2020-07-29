@@ -143,7 +143,7 @@ router.get("/getAcceptedReservations/:category", function (req, res, next) {
     const category = req.params.category;
 
     if(category=="all"){          
-        Reservations.find({"status": "accepted"},{custID:1, daterequested:1, time:1, repairtype:1, problembrief:1, status:1})    
+        Reservations.find({"status": "accepted"},{})    
             .select()
             .exec()
             .then(data => {
@@ -197,9 +197,78 @@ router.get("/findReservation/:reserv_id", function (req, res, next) {
             })
             .catch(error => {
                 console.log("Data Transfer Unsuccessfull..!")
-                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
             })
     })
+});
+
+
+/******************************************************** Search All Reservations by CustID *******************************************************/
+
+router.get("/findReservationByCustomer/:cust_id", function (req, res, next) {
+    const customer_id = req.params.cust_id;
+    Reservations.findByCustomerid(customer_id, function (err, reservation) {
+        if (err) throw err;
+        if (!reservation) {    //check the reservation available or not
+            res.json({ state: false, msg: "No user found..!" });
+            return;
+        }
+         Reservations.find({ custID: customer_id })    //find reservation using userid
+            .select() 
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(data);
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+    })
+});
+
+
+
+/******************************************************** View All Reservations of Customer Job Category Wise *******************************************************/
+
+router.get("/getReservationsByCategoryOfCust", function (req, res, next) {
+
+    var category = req.params.cat;
+    var customerid = req.params.uid; //ERR 404
+
+    if(category=="all"){          
+        Reservations.find({custID: customerid},{})    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+
+    }else{                                                                         
+        Reservations.find({ repairtype: category, custID: customerid})    
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+            
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessfull..!")
+            res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+        })
+    }
+    
 });
 
 
