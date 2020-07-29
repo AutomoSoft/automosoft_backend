@@ -289,7 +289,6 @@ router.post("/nexmo", function(req, res){
 router.post("/updateCharges", function (req, res) {
     
     const jobNo = req.body.jobNo;
-    console.log(req.body.balance)
 
     Job.updateOne({ jobNo: jobNo },  {
         $set: { subTotal: req.body.subTotal, tax: req.body.tax, grandTotal: req.body.grandTotal, balance: req.body.balance, lastpaymentdate: req.body.invoiceDate },
@@ -307,7 +306,23 @@ router.post("/updateCharges", function (req, res) {
 });
 
 
+/**************************************************** Get Last Job Number  ************************************************************/
 
+router.get("/getLastJobNo", function (req, res) {
+    Job.find().sort( { _id: -1 }).limit(1)
+    .select()
+    .exec()
+    .then(data => {
+        console.log("Data Transfer Success..!");
+        //console.log(data);
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+    })
+    .catch(error => {
+        console.log("Data Transfer Unsuccessful..!");
+        res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+    })
+});
 
 
 
