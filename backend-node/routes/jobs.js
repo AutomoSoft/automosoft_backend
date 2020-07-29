@@ -28,8 +28,12 @@ router.post("/addNewJob", function (req, res) {
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
             estCharge:req.body.estCharge,
-            amountPaid:req.body.amountPaid,
-            balance:req.body.balance,
+            subTotal:'0',
+            tax:'0',
+            grandTotal:'0',
+            amountPaid: 0,
+            balance:'0',
+            lastpaymentdate:' ',
             jobStatus:req.body.jobStatus,
         });
         console.log(newJob)
@@ -279,9 +283,28 @@ router.post("/nexmo", function(req, res){
 
 });
 
-/*************************************************************Get items of job ************************************************/
+/************************************************************* Update Job Charges ************************************************/
 
 
+router.post("/updateCharges", function (req, res) {
+    
+    const jobNo = req.body.jobNo;
+    console.log(req.body.balance)
+
+    Job.updateOne({ jobNo: jobNo },  {
+        $set: { subTotal: req.body.subTotal, tax: req.body.tax, grandTotal: req.body.grandTotal, balance: req.body.balance, lastpaymentdate: req.body.invoiceDate },
+        $inc: { amountPaid: req.body.amountPaid }})
+        .exec()
+        .then(data => {
+            console.log("Job Details Updated Successfully!")
+            res.json({ state: true, msg: "Data Updated Successfully!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to Update Details!!!")
+            res.json({ state: false, msg: "Failed to Update Data!!!" });
+        })
+});
 
 
 
