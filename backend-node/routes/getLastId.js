@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 const Job = require('../models/jobs');
+const Supplier = require('../models/supplier');
 
 
 
@@ -125,6 +126,23 @@ router.get("/getLastEmpId/:id", function (req, res) {
     
 });
 
+/**************************************************** Get Last Supplier Id  ************************************************************/
+
+router.get("/getLastSupId", function (req, res) {
+    Supplier.find().sort( { _id: -1 }).limit(1)
+    .select()
+    .exec()
+    .then(data => {
+        console.log("Data Transfer Success..!");
+        //console.log(data);
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+    })
+    .catch(error => {
+        console.log("Data Transfer Unsuccessful..!");
+        res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+    })
+});
 
 
 module.exports = router; 
