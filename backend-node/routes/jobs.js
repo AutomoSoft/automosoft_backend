@@ -324,7 +324,26 @@ router.get("/getLastJobNo", function (req, res) {
     })
 });
 
+/***********************************************************Get Job history of a customer ******************************************/
 
+router.get("/viewServices/:custId", function (req, res, next) {
+    const custId = req.params.custId;
+   
+        Job.find({ custId: custId })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Job Not Found!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
 
 
 
