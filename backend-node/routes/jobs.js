@@ -112,7 +112,7 @@ router.get("/getCurrentJobs", function (req, res) {
 
   router.post("/updateStatus/:jobid", function (req, res) {
     var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
-    var authToken = "f4ef8de038aad6b9899dee4c5a07ec12";
+    var authToken = "5a305a0b474c004cd95e9e4df8164b32";
 
     var twilio = require("twilio");
     var client = new twilio(accountId, authToken);
@@ -307,7 +307,26 @@ router.post("/updateCharges", function (req, res) {
 
 
 
+/***********************************************************Get Job history of a customer ******************************************/
 
+router.get("/viewServices/:custId", function (req, res, next) {
+    const custId = req.params.custId;
+   
+        Job.find({ custId: custId })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
+
+            })
+            .catch(error => {
+                console.log("Job Not Found!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
 
 
 
