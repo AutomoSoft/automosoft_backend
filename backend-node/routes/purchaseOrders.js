@@ -32,9 +32,9 @@ router.post("/requestQuantity", function (req, res) {
 });
 
 /******************************************************** Get Pending Orders *******************************************************/
-router.get("/getPendingOrders", function (req, res) {
-    console.log("dds");
-    purchaseOrders.find( { status:0 }, { dateApplied: 1,itemid: 1, quantity: 1, supplierid: 1, dateReceived: 1, lastmodifiedby: 1, lastmodifiedon:1 } )
+router.get("/fetchOrdersByStatus", function (req, res) {
+  const statusArray = req.query.status ? [req.query.status]: [0, 1]; 
+    purchaseOrders.find( { status: { $in: statusArray } })
       .select()
       .exec()
       .then(data => {
@@ -51,20 +51,17 @@ router.get("/getPendingOrders", function (req, res) {
 
 /******************************************************** Approve Orders *******************************************************/  
 router.put("/approveOrder", function (req, res) {
-  const id = req.body._id;
-  purchaseOrders.updateOne( {_id:id}, {status :1},{new:true})
+  const id = req.body.id;
+  purchaseOrders.updateOne({ _id: id }, { status: 1 }, { new: true })
     .select()
     .exec()
     .then(data => {
       console.log("Data Transfer Success..!");
-      //console.log(data);
       res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-
     })
     .catch(error => {
       console.log("Data Transfer Unsuccessful..!");
       res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
     })
 });
-
 module.exports = router; 

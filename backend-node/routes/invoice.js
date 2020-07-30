@@ -15,7 +15,7 @@ router.post("/createInvoice", function (req, res) {
             jobNo: req.body.jobNo,
             jobDate: req.body.jobDate,
             custId: req.body.custId,
-            firstName: req.body.firstName,
+            firstName: req.body.firstname,
             lastName: req.body.lastName,
             vehicleNo: req.body.vehicleNo,
             engineNo: req.body.engineNo,
@@ -23,10 +23,10 @@ router.post("/createInvoice", function (req, res) {
             subTotal: req.body.subTotal,
             tax: req.body.tax,
             grandTotal: req.body.grandTotal,
+            amountPaid: req.body.amountPaid,
+            balance: req.body.balance,
             note: req.body.note,
             createdBy: req.body.createdBy,
-            lastmodifiedby: req.body.lastmodifiedby,
-            lastmodifiedon: req.body.lastmodifiedon,
                 });
                 console.log(newInvoice)
             newInvoice.save()      //save job data
@@ -41,5 +41,10 @@ router.post("/createInvoice", function (req, res) {
 
                     
                 });
+
+
+
+
+
 
 module.exports = router; 
