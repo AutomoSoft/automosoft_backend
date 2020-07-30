@@ -25,6 +25,8 @@ const purchaseOrders = require('./routes/purchaseOrders');
 
 const invoice = require('./routes/invoice');
 
+const getLastId = require('./routes/getLastId');
+
 
 app.use(cors());
 const connection = mongoose.connect("mongodb+srv://Lalinda:Ucsc@123@cluster0-pvero.mongodb.net/AutomoSoft?retryWrites=true&w=majority",
@@ -65,6 +67,8 @@ app.use('/mobile', mobileUser);
 
 app.use('/reservations', reservations);
 app.use('/purchaseOrders', purchaseOrders);
+
+app.use('/getLastId', getLastId);
 
 app.get("/", function(req,res) {
     //res.send("Hello world");
