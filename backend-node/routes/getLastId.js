@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/users');
 const Job = require('../models/jobs');
 const Supplier = require('../models/supplier');
+const Items = require('../models/items');
 
 
 
@@ -143,6 +144,91 @@ router.get("/getLastSupId", function (req, res) {
         res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
     })
 });
+
+/**************************************************** Get Last Item Id  ************************************************************/
+
+router.get("/getLastItemId/:id", function (req, res) {
+    const itemtype = req.params.id;
+    // console.log(req.params.id);
+
+    if( itemtype=="Paints" ){
+        Items.find({ itemtype: "Paints"}).sort( { _id: -1 }).limit(1)
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+        })
+    }
+    if( itemtype=="Tools" ){
+        Items.find({ itemtype: "Tools"}).sort( { _id: -1 }).limit(1)
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+        })
+    }
+    if( itemtype=="Spare Parts" ){
+        Items.find({ itemtype: "Spare Parts"}).sort( { _id: -1 }).limit(1)
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+        })
+    }
+    if( itemtype=="Tyres" ){
+        Items.find({ itemtype: "Tyres"}).sort( { _id: -1 }).limit(1)
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+        })
+    }
+    if( itemtype=="Electric Parts" ){
+        Items.find({ itemtype: "Electric Parts"}).sort( { _id: -1 }).limit(1)
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+        })
+    }
+    
+});
+
 
 
 module.exports = router; 
