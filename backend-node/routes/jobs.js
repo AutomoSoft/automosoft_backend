@@ -306,23 +306,6 @@ router.post("/updateCharges", function (req, res) {
 });
 
 
-/**************************************************** Get Last Job Number  ************************************************************/
-
-router.get("/getLastJobNo", function (req, res) {
-    Job.find().sort( { _id: -1 }).limit(1)
-    .select()
-    .exec()
-    .then(data => {
-        console.log("Data Transfer Success..!");
-        //console.log(data);
-        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-
-    })
-    .catch(error => {
-        console.log("Data Transfer Unsuccessful..!");
-        res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
-    })
-});
 
 
 
