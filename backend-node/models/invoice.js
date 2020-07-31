@@ -20,6 +20,7 @@ const invoiceSchema = mongoose.Schema({
     balance: { type: Number, require: true },
     note: {type: String, require:true},
     createdBy: { type: String, require: true },
+    filePath:{type: String, require:true},  
    
 });
 
