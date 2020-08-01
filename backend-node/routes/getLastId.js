@@ -4,6 +4,7 @@ const User = require('../models/users');
 const Job = require('../models/jobs');
 const Supplier = require('../models/supplier');
 const Items = require('../models/items');
+const Invoice = require('../models/invoice');
 
 
 
@@ -229,6 +230,22 @@ router.get("/getLastItemId/:id", function (req, res) {
     
 });
 
+/**************************************************** Get Last Invoice Number  ************************************************************/
 
+router.get("/getLastInvoiceNo", function (req, res) {
+    Invoice.find().sort( { _id: -1 }).limit(1)
+    .select()
+    .exec()
+    .then(data => {
+        console.log("Data Transfer Success..!");
+        //console.log(data);
+        res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+    })
+    .catch(error => {
+        console.log("Data Transfer Unsuccessful..!");
+        res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+    })
+});
 
 module.exports = router; 
