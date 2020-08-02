@@ -28,8 +28,12 @@ router.post("/addNewJob", function (req, res) {
             lastmodifiedby:req.body.lastmodifiedby,
             lastmodifiedon:req.body.lastmodifiedon,
             estCharge:req.body.estCharge,
-            amountPaid:req.body.amountPaid,
-            balance:req.body.balance,
+            subTotal:'0',
+            tax:'0',
+            grandTotal:'0',
+            amountPaid: 0,
+            balance:'0',
+            lastpaymentdate:' ',
             jobStatus:req.body.jobStatus,
         });
         console.log(newJob)
@@ -108,7 +112,7 @@ router.get("/getCurrentJobs", function (req, res) {
 
   router.post("/updateStatus/:jobid", function (req, res) {
     var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
-    var authToken = "f4ef8de038aad6b9899dee4c5a07ec12";
+    var authToken = "5a305a0b474c004cd95e9e4df8164b32";
 
     var twilio = require("twilio");
     var client = new twilio(accountId, authToken);
@@ -279,14 +283,50 @@ router.post("/nexmo", function(req, res){
 
 });
 
-/*************************************************************Get items of job ************************************************/
+/************************************************************* Update Job Charges ************************************************/
+
+
+router.post("/updateCharges", function (req, res) {
+    
+    const jobNo = req.body.jobNo;
+
+    Job.updateOne({ jobNo: jobNo },  {
+        $set: { subTotal: req.body.subTotal, tax: req.body.tax, grandTotal: req.body.grandTotal, balance: req.body.balance, lastpaymentdate: req.body.invoiceDate },
+        $inc: { amountPaid: req.body.amountPaid }})
+        .exec()
+        .then(data => {
+            console.log("Job Details Updated Successfully!")
+            res.json({ state: true, msg: "Data Updated Successfully!" });
+
+        })
+        .catch(error => {
+            console.log("Failed to Update Details!!!")
+            res.json({ state: false, msg: "Failed to Update Data!!!" });
+        })
+});
 
 
 
+/***********************************************************Get Job history of a customer ******************************************/
 
+router.get("/viewServices/:custId", function (req, res, next) {
+    const custId = req.params.custId;
+   
+        Job.find({ custId: custId })    
+            .select()
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+                
 
-
-
+            })
+            .catch(error => {
+                console.log("Job Not Found!")
+                res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+            })
+    
+});
 
 
 
