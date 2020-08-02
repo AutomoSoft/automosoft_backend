@@ -71,8 +71,8 @@ router.post("/sendEmail", function (req, res) {
 
   const generateEmailText = (supplierName, itemName, itemId, itemType, quantity) => {
     return `
-      Dear ${suppliername},\n
-      \n
+      Dear ${suppliername},
+
       Kindly note that we wish to place an order for the following item.
 
         * Item ID: ${itemId}
@@ -80,12 +80,12 @@ router.post("/sendEmail", function (req, res) {
         * Item Type: ${itemType}
         * Item Quantity: ${quantity}
       
-      Kindly also find the enclosed terms and conditions for the order for your reference. \n
-      Kindly make arrangements for these goods to be delivered to our office address. Please \n
-      contact us on 0777777777 if there is any other information needed or you have questions.\n
+      Kindly also find the enclosed terms and conditions for the order for your reference.
+      Kindly make arrangements for these goods to be delivered to our office address. Please
+      contact us on 0777777777 if there is any other information needed or you have questions.
       Please treat this order with urgency and deliver the goods at your earliest.
 
-      It is a pleasure to do business with an esteemed company such as yours and we hope to \n
+      It is a pleasure to do business with an esteemed company such as yours and we hope to 
       continue working together in the future.
 
       Thank you in advance.
@@ -97,6 +97,7 @@ router.post("/sendEmail", function (req, res) {
   };
 
   const sendEmail = (emailSubject, supplieremail, emailText) => {
+    console.log('sending email');
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -135,7 +136,9 @@ router.post("/sendEmail", function (req, res) {
     supplieremail
   } = req.body;
 
-  items.findOne({ _id: itemid }).select().exec().then(item => {
+  console.log('finding item');
+  items.findOne({ itemid }).select().exec().then(item => {
+    console.log('found item');
 
     const newPurchaseOrderRequest = purchaseOrderRequests(
       {
@@ -151,12 +154,17 @@ router.post("/sendEmail", function (req, res) {
         emailText: generateEmailText(suppliername, item.itemname, item.itemid, item.itemtype, quantity)
       }
     );
-    
+    console.log('update purchase order');
+
 
     purchaseOrders.updateOne({ _id: purchaseOrderID },
       { supplierid: supplierid }).select().exec().then(data => {
+        console.log('updated purchase order');
+        console.log('saving purchase order request');
+
         newPurchaseOrderRequest.save().then(res => {
-          sendEmail(emailSubject, supplieremail, emailText);
+          console.log('saved purchase order request');
+          sendEmail(newPurchaseOrderRequest.emailSubject, supplieremail, newPurchaseOrderRequest.emailText);
         }).catch(error => {
 
         });
@@ -166,18 +174,6 @@ router.post("/sendEmail", function (req, res) {
   }).catch(error => {
 
   });
-
-  purchaseOrders.updateOne({ _id: id }, { status: 1 }, { new: true })
-    .select()
-    .exec()
-    .then(data => {
-      console.log("Data Transfer Success..!");
-      res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-    })
-    .catch(error => {
-      console.log("Data Transfer Unsuccessful..!");
-      res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
-    })
 });
 
 module.exports = router; 
