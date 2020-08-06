@@ -97,7 +97,6 @@ router.post("/sendEmail", function (req, res) {
   };
 
   const sendEmail = (emailSubject, supplieremail, emailText) => {
-    console.log('sending email');
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -115,14 +114,16 @@ router.post("/sendEmail", function (req, res) {
       to: supplieremail,
       subject: emailSubject,
       text: emailText
-    }
+    };
 
     transporter.sendMail(mailOptions, function(err, data){
       if (err) {
-          console.log('Error occurs!!!!', err);
+        console.log('Error occurs!!!!', err);
+        res.json({ state: false, msg: "Sending email failed..!" });
       }
       else {
-          console.log('email sent!!!');
+        console.log('email sent!!!');
+        res.json({ state: true, msg: "Successfully sent the email..!" });
       }
   });
   };
@@ -136,10 +137,7 @@ router.post("/sendEmail", function (req, res) {
     supplieremail
   } = req.body;
 
-  console.log('finding item');
   items.findOne({ itemid }).select().exec().then(item => {
-    console.log('found item');
-
     const newPurchaseOrderRequest = purchaseOrderRequests(
       {
         purchaseOrderID,
@@ -154,24 +152,26 @@ router.post("/sendEmail", function (req, res) {
         emailText: generateEmailText(suppliername, item.itemname, item.itemid, item.itemtype, quantity)
       }
     );
-    console.log('update purchase order');
 
-
-    purchaseOrders.updateOne({ _id: purchaseOrderID },
-      { supplierid: supplierid }).select().exec().then(data => {
-        console.log('updated purchase order');
-        console.log('saving purchase order request');
-
-        newPurchaseOrderRequest.save().then(res => {
-          console.log('saved purchase order request');
+    purchaseOrders.updateOne({ _id: purchaseOrderID }, { supplierid: supplierid })
+      .select()
+      .exec()
+      .then(data => {
+        newPurchaseOrderRequest
+          .save()
+          .then(res => {
           sendEmail(newPurchaseOrderRequest.emailSubject, supplieremail, newPurchaseOrderRequest.emailText);
+
         }).catch(error => {
+          res.json({ state: false, msg: "Save new purchase order request failed..!" });
 
         });
       }).catch(error => {
+      res.json({ state: false, msg: "Update purchase order failed..!" });
 
       });
   }).catch(error => {
+    res.json({ state: false, msg: "Find item failed..!" });
 
   });
 });
