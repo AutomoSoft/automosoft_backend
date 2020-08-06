@@ -52,9 +52,9 @@ router.post("/addNewJob", function (req, res) {
 
 /******************************************************** Get Ongoing Jobs *******************************************************/
 
-router.get("/getOngoingJobs", function (req, res, next) {
+router.get("/getOngoingJobs", function (req, res, next) { 
     
-    Job.find( {$or: [ { jobStatus: "Queued" }, { jobStatus: "Started" },{ jobStatus: "Partially Completed" }, { jobStatus: "Halfway" }] }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1} )
+    Job.find( {$or: [ { jobStatus: "Queued" }, { jobStatus: "Started" },{ jobStatus: "Partially Completed" }, { jobStatus: "Halfway" }] }, { jobNo: 1, jobType: 1, custId: 1, jobStatus: 1} ).sort( { _id: -1 })
         .select()
         .exec() 
         .then(data => {
