@@ -160,6 +160,28 @@ router.post("/addNewItem", function (req, res) {
              
 });
 
+/******************************************************Search Supplier by Item******************************************************************* */
+
+router.get("/searchSuppliers/item/:itemid", function (req, res, next) {
+
+    const itemid = req.params.itemid;
+    
+    Supplier.find( {}, { supid: 1, usertype: 1, supname: 1, items: 1, contactnumber: 1, addedon: 1, email: 1 } )
+        .select() 
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+        
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+});
+
+
 
 
 
