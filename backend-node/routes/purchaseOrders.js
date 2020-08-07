@@ -4,11 +4,11 @@ const nodemailer = require('nodemailer');
 const purchaseOrders = require('../models/purchase-orders');
 const purchaseOrderRequests = require('../models/purchase-order-requests');
 const items = require('../models/items');
+const { PURCHASE_ORDERS } = require('../constants');
 
 /******************************************************** Request quantity *******************************************************/
 
 router.post("/requestQuantity", function (req, res) {
-    console.log(req.body)
     var newpurchaseOrders = new purchaseOrders({
         dateApplied:new Date(),
         itemid: req.body.itemid,
@@ -17,7 +17,7 @@ router.post("/requestQuantity", function (req, res) {
         dateReceived:null,
         lastmodifiedby: req.body.userid,
         lastmodifiedon: new Date(),
-        status:0,
+        status: PURCHASE_ORDERS.ORDER_STATUS.NOT_APPROVED,
     });
    
     newpurchaseOrders.save()     
@@ -35,7 +35,7 @@ router.post("/requestQuantity", function (req, res) {
 
 /******************************************************** Get Pending Orders *******************************************************/
 router.get("/fetchOrdersByStatus", function (req, res) {
-  const statusArray = req.query.status ? [req.query.status]: [0, 1]; 
+  const statusArray = req.query.status ? [req.query.status]: Object.values(PURCHASE_ORDERS.ORDER_STATUS); 
     purchaseOrders.find( { status: { $in: statusArray } })
       .select()
       .exec()
@@ -54,7 +54,7 @@ router.get("/fetchOrdersByStatus", function (req, res) {
 /******************************************************** Approve Orders *******************************************************/  
 router.put("/approveOrder", function (req, res) {
   const id = req.body.id;
-  purchaseOrders.updateOne({ _id: id }, { status: 1 }, { new: true })
+  purchaseOrders.updateOne({ _id: id }, { status: PURCHASE_ORDERS.ORDER_STATUS.APPROVED }, { new: true })
     .select()
     .exec()
     .then(data => {
@@ -129,7 +129,7 @@ router.post("/sendEmail", function (req, res) {
   };
 
   const {
-    purchaseOrderID,
+    purchaseOrderid,
     itemid,
     quantity,
     supplierid,
@@ -137,10 +137,12 @@ router.post("/sendEmail", function (req, res) {
     supplieremail
   } = req.body;
 
+  console.log(itemid);
   items.findOne({ itemid }).select().exec().then(item => {
+    console.log(item);
     const newPurchaseOrderRequest = purchaseOrderRequests(
       {
-        purchaseOrderID,
+        purchaseOrderid,
         itemId: itemid,
         itemName: item.itemname,
         itemType: item.itemtype,
@@ -153,7 +155,7 @@ router.post("/sendEmail", function (req, res) {
       }
     );
 
-    purchaseOrders.updateOne({ _id: purchaseOrderID }, { supplierid: supplierid })
+    purchaseOrders.updateOne({ _id: purchaseOrderid }, { status: PURCHASE_ORDERS.ORDER_STATUS.REQUESTED, supplierid })
       .select()
       .exec()
       .then(data => {

@@ -1,0 +1,11 @@
+const ORDER_STATUS = {
+    APPROVED: "APPROVED",
+    NOT_APPROVED: "NOT_APPROVED",
+    REQUESTED: "REQUESTED",
+    RECEIVED: "RECEIVED",
+    FULFILLED: "FULFILLED",
+};
+
+module.exports = {
+    ORDER_STATUS
+}

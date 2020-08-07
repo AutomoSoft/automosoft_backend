@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.schema;
 
 const purchaseOrderRequestsSchema = mongoose.Schema({
+    purchaseOrderid: { type: String, require: true },
     itemId: { type: String, require: true },
     itemName: { type: String, require: true },
     itemType: { type: String, require: true },
