@@ -1,6 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const Reservations = require('../models/reservations');
+const nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'bzzthegroup@gmail.com',
+        pass: '#bzz#team@123!',
+        
+    },
+    tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false
+    },
+});
+
 
 /******************************************************** Create a Reservation *******************************************************/
 
@@ -300,12 +315,20 @@ router.get("/viewAcceptedReservationsForTheDate/:date", function (req, res, next
 
 router.post("/acceptReservation/:resevid", function (req, res) {
     const resevid = req.params.resevid;
-    //  console.log(req.body);
+
+    var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
+    var authToken = "c1f93ec2e03781fa672f7b5595bd7d13";
+
+    var twilio = require("twilio");
+    var client = new twilio(accountId, authToken);
+    console.log(req.body);
     //  console.log(resevid);
     const input = {
             foremanid: req.body.foremanid,
             dateaccepted: req.body.dateaccepted,
             status: "accepted",
+            contactnumber: req.body.contactnumber,
+            email:req.body.email
     }
     
     Reservations.updateOne({ _id: resevid }, { $set: input })    //update reservation data with of the resevid passed
@@ -319,6 +342,71 @@ router.post("/acceptReservation/:resevid", function (req, res) {
             console.log("Failed to Update Data!!!")
             res.json({ state: false, msg: "Failed to Update Data!!!" });
         })
+
+        client.messages.create({
+            body: " Dear "+req.body.custID +", "+"\n"+"Your reservation requet has been accepted ",
+            to: req.body.contactnumber,
+            from:"+16183703018",
+        })
+        //console.log(req.body.contactnumber)
+        .then(data => {
+            console.log("SMS was sent..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+      
+          })
+          .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+          })  
+          
+          
+          
 });
+
+
+
+router.post("/sendAcceptMail", (req, res, next) => {
+    const mail = new Reservations({
+        //_id:req.body._id,
+        custID: req.body.custID,
+        email: req.body.email,
+        daterequested: req.body.daterequested,
+        time: req.body.time
+       
+    });
+    let mailOptions = {
+        from: 'ravindyayrh@gmail.com',
+        to: req.body.email,
+        subject: "AutomoSoft Reservation",
+        text:"Dear " +req.body.custID+","+ "\n\n"+
+        "We would like to confirm your appointment with AutomSoft, on " +req.body.daterequested+ " at "+req.body.time+" . Please do not hesitate to contact us with any further questions and keep us informed if there should be any changes.\n\n"
+        +"Best Regards,\n"+"AutomoSoft Team" ,
+    }
     
+        mail.save()
+            .then(result => {
+                res.status(201).json({
+                    message: "contact sent",
+                    result: result
+                });
+                transporter.sendMail(mailOptions, function(err, data){
+                    if (err) {
+                        console.log('Error occurs!!!!', err);
+                    }
+                    else {
+                        console.log('email sent!!!');
+                    }
+                });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                });
+            });
+            
+
+});
+
+
 module.exports = router;
