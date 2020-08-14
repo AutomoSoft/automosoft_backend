@@ -67,6 +67,21 @@ router.put("/approveOrder", function (req, res) {
     })
 });
 
+/******************************************************** Mark Received *******************************************************/  
+router.put("/markReceived", function (req, res) {
+  const id = req.body.id;
+  purchaseOrders.updateOne({ _id: id }, { status: PURCHASE_ORDERS.ORDER_STATUS.RECEIVED, dateReceived: new Date() }, { new: true })
+    .select()
+    .exec()
+    .then(data => {
+      console.log("Data Transfer Success..!");
+      res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+    })
+    .catch(error => {
+      console.log("Data Transfer Unsuccessful..!");
+      res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+    })
+});
 
 /******************************************************** Add to Stock *******************************************************/  
 router.put("/addToStock", function (req, res) {
