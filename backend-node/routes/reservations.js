@@ -312,7 +312,7 @@ router.post("/acceptReservation/:resevid", function (req, res) {
             foremanid: req.body.foremanid,
             dateaccepted: req.body.dateaccepted,
             status: "accepted",
-            customerid: req.body.customerid,
+            contactnumber: req.body.contactnumber,
     }
     
     Reservations.updateOne({ _id: resevid }, { $set: input })    //update reservation data with of the resevid passed
@@ -327,8 +327,8 @@ router.post("/acceptReservation/:resevid", function (req, res) {
             res.json({ state: false, msg: "Failed to Update Data!!!" });
         })
         client.messages.create({
-            body: " Dear "+req.body.custId +", "+"\n"+" Your reservation requet has been accepted ",
-            to: "+94778024051",
+            body: " Dear "+req.body.custID +", "+"\n"+"Your reservation requet has been accepted ",
+            to: req.body.contactnumber,
             from:"+16183703018",
         })
         //console.log(req.body.contactnumber)
