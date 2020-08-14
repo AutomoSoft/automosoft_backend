@@ -300,12 +300,19 @@ router.get("/viewAcceptedReservationsForTheDate/:date", function (req, res, next
 
 router.post("/acceptReservation/:resevid", function (req, res) {
     const resevid = req.params.resevid;
-    //  console.log(req.body);
+
+    var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
+    var authToken = "c1f93ec2e03781fa672f7b5595bd7d13";
+
+    var twilio = require("twilio");
+    var client = new twilio(accountId, authToken);
+    console.log(req.body);
     //  console.log(resevid);
     const input = {
             foremanid: req.body.foremanid,
             dateaccepted: req.body.dateaccepted,
             status: "accepted",
+            customerid: req.body.customerid,
     }
     
     Reservations.updateOne({ _id: resevid }, { $set: input })    //update reservation data with of the resevid passed
@@ -319,6 +326,22 @@ router.post("/acceptReservation/:resevid", function (req, res) {
             console.log("Failed to Update Data!!!")
             res.json({ state: false, msg: "Failed to Update Data!!!" });
         })
+        client.messages.create({
+            body: " Dear "+req.body.custId +", "+"\n"+" Your reservation requet has been accepted ",
+            to: "+94778024051",
+            from:"+16183703018",
+        })
+        //console.log(req.body.contactnumber)
+        .then(data => {
+            console.log("SMS was sent..!");
+            //console.log(data);
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+      
+          })
+          .catch(error => {
+            console.log("Data Transfer Unsuccessful..!");
+            res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+          })   
 });
     
 module.exports = router;
