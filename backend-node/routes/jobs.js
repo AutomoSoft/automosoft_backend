@@ -157,7 +157,7 @@ router.post("/addJobItems", function (req, res) {
 
     const items = req.body.items;
     const jobNo = req.body.jobNo;
-    console.log(req.body.items)
+    // console.log(req.body.items)
 
     Job.updateOne({ jobNo: jobNo }, { $push: {itemsUsed: req.body.items} }, {$set: { lastmodifiedby: req.body.foremanid, lastmodifiedon: req.body.date}})
         .exec()

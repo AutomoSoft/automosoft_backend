@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Items = require('../models/items');
+const ItemUsage = require('../models/itemusage');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const multer = require('multer');
@@ -42,11 +43,34 @@ router.post("/registerItem", function (req, res) {
             filepath: fullPath,
         });
 
+        var itemUsage = new ItemUsage({
+            itemtype: req.body.itemtype,
+            itemid: req.body.itemid,
+            itemname: req.body.itemName,
+            usage: [
+                {
+                  jobNo: '',
+                  qty: '',
+                  date: '',
+                }
+              ]
+
+        })
+
 
         newItem.save()      //save the item data 
             .then(result => {
-                console.log(result)
-                res.json({ state: true, msg: "Data Inserted Successfully..!" });
+                // console.log(result)
+                // res.json({ state: true, msg: "Data Inserted Successfully..!" });
+                itemUsage.save()      //save the item data 
+                    .then(result => {
+                        console.log(result)
+                        res.json({ state: true, msg: "Data Inserted Successfully..!" });
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+                    })    
             })
             .catch(error => {
                 console.log(error)
@@ -170,7 +194,7 @@ router.post("/addStock", function (req, res) {
     //console.log(itemid)
 
 
-    Items.updateOne({ itemid: itemid }, { $inc: { storequantity: req.body.quantity }})    
+    Items.updateOne({ itemid: itemid }, { $inc: { storequantity: req.body.quantity }})    //issue heree
     Items.updateOne({ itemid: itemid }, { $set: { lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon }})  
     .select()
     .exec()
@@ -193,7 +217,7 @@ router.post("/withdrawStock", async function (req, res) {
     const items = req.body.items;
     const updatedItems = [];
     
-    console.log(items)
+    // console.log(items)
 
     const promises = [];    
     items.forEach((item) => {
@@ -202,6 +226,74 @@ router.post("/withdrawStock", async function (req, res) {
       Items.updateOne({ itemid: itemId }, {
         $inc: { storequantity: -qty },
         $set: { lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon }
+      }).exec()
+        .then(data => {
+          console.log("1-Data Transfer Successful..!")
+          updatedItems.push(data);
+        })
+        .catch(error => {
+          console.log("Data Transfer Unsuccessful..!")
+          console.log(error)
+        })
+      );
+
+
+    });
+  
+    await Promise.all(promises);
+  
+    if (items.length === updatedItems.length) {
+      stockWithdraw.save()      //save the item data
+        .then(result => { 
+          console.log(result)
+          res.json({ state: true, msg: "Data Inserted Successfully..!" });
+        })
+        .catch(error => {
+          console.log(error)
+          res.json({ state: false, msg: "Data Inserting Unsuccessful..!" });
+        })
+    } else {
+      res.json({ state: false, msg: "Data Inserting Unsuccessful..!" });
+    }
+  });
+
+  /******************************************************** Update Item Usage Model *******************************************************/
+
+
+router.post("/updateItemUsage", async function (req, res) {
+    // const usage = ItemUsage(req.body);
+
+    // console.log(req.body)
+    const job = req.body.jobNo;
+    const date = req.body.date;
+
+    const items = req.body.items;
+    const updatedItems = [];
+    
+    // console.log(items)
+
+    const promises = [];    
+    items.forEach((item) => {
+        var itemUsage = new ItemUsage({
+            itemtype: item.itemtype,
+            itemid: item.itemId,
+            itemname: item.itemname,
+            usage: [
+                {
+                  jobNo: job,
+                  qty: item.qty,
+                  date: date,
+                }
+              ]
+    
+        })
+
+    // console.log(itemUsage)
+
+      promises.push(
+        ItemUsage.updateOne({ itemid: item.itemId }, {
+        $push: { usage: itemUsage.usage },
+        $set: { itemtype: item.itemtype, itemname: item.itemname  }
       }).exec()
         .then(data => {
           console.log("Data Transfer Successful..!")
@@ -219,21 +311,12 @@ router.post("/withdrawStock", async function (req, res) {
     await Promise.all(promises);
   
     if (items.length === updatedItems.length) {
-      stockWithdraw.save()      //save the item data
-        .then(result => {
-          console.log(result)
-          res.json({ state: true, msg: "Data Inserted Successfully..!" });
-        })
-        .catch(error => {
-          console.log(error)
-          res.json({ state: false, msg: "Data Inserting Unsuccessful..!" });
-        })
+
+          res.json({ state: true, msg: "Data Transfer Successful..!" });
     } else {
       res.json({ state: false, msg: "Data Inserting Unsuccessful..!" });
     }
   });
-
-
   
   /******************************************************** Available Items *******************************************************/
   
