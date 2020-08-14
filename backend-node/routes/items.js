@@ -47,13 +47,7 @@ router.post("/registerItem", function (req, res) {
             itemtype: req.body.itemtype,
             itemid: req.body.itemid,
             itemname: req.body.itemName,
-            usage: [
-                {
-                  jobNo: '',
-                  qty: '',
-                  date: '',
-                }
-              ]
+            usage: [ ]
 
         })
 
@@ -193,9 +187,11 @@ router.post("/addStock", function (req, res) {
     const itemid = req.body.itemId;
     //console.log(itemid)
 
-
-    Items.updateOne({ itemid: itemid }, { $inc: { storequantity: req.body.quantity }})    //issue heree
-    Items.updateOne({ itemid: itemid }, { $set: { lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon }})  
+    Items.updateOne({ itemid: itemid }, 
+      { 
+        $set: { lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon },
+        $inc: { storequantity: req.body.quantity }
+      })  
     .select()
     .exec()
     .then(data => {
