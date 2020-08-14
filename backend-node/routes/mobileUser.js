@@ -44,7 +44,15 @@ router.post("/login", function (req, res, next) {
                     
                     next();
                  }
-                
+                else{
+                    res.json({
+                        state: false,
+                        msg: "User Not Found"
+                      
+
+
+                    });
+                }
             }
             else {
                 res.json({
@@ -70,7 +78,7 @@ router.get('/customer', function (req,res,next) {
       });
 
 });
-/*...................vehicale details...............................*/
+/*...................vehicle details...............................*/
 router.get('/vehicales/:custid',function(req,res,next){
     const custid=req.params.custid
     console.log(custid);
