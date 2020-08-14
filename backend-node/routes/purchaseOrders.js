@@ -67,6 +67,35 @@ router.put("/approveOrder", function (req, res) {
     })
 });
 
+
+/******************************************************** Add to Stock *******************************************************/  
+router.put("/addToStock", function (req, res) {
+
+  const { id, itemId, quantity } = req.body;
+
+  purchaseOrders.updateOne({ _id: id }, { status: PURCHASE_ORDERS.ORDER_STATUS.FULFILLED }, { new: true })
+    .select()
+    .exec()
+    .then(data => {
+      items.updateOne({ itemid: itemId }, { $inc: { storequantity: quantity } })    
+      .select()
+      .exec()
+      .then(data => {
+          console.log("Data Transfer Success..!")
+          res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+          
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessfull..!")
+            res.json({ state: false, msg: "Data Inserting Unsuccessfull..!" });
+        })
+    })
+    .catch(error => {
+      console.log("Data Transfer Unsuccessful..!");
+      res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
+    })
+});
+
 router.post("/sendEmail", function (req, res) {
 
   const generateEmailText = (supplierName, itemName, itemId, itemType, quantity) => {
