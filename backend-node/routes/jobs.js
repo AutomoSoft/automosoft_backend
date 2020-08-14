@@ -148,6 +148,8 @@ router.get("/getCurrentJobs", function (req, res) {
             console.log("Data Transfer Unsuccessful..!");
             res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
           })   
+
+          
 });
 
 /******************************************************** Update Job Items *******************************************************/
