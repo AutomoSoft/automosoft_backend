@@ -339,7 +339,7 @@ router.post("/updateItemUsage", async function (req, res) {
 
   /******************************************************** CHART DATA for Item *******************************************************/
   
-  router.get("/itemChartDAta/:itemid", function (req, res, next) {
+  router.get("/itemChartData/:itemid", function (req, res, next) {
     var datetime = new Date();
     var currentMonth = datetime.getMonth();   //index starts from 0 (months 0-11)
     const itemid = req.params.itemid;
@@ -396,7 +396,7 @@ router.post("/updateItemUsage", async function (req, res) {
 
       console.log(result);
       // console.log(dataArray1)
-        res.send(docs)     
+        res.send(result)     
     })
     .catch(error => {
         console.log(error);
