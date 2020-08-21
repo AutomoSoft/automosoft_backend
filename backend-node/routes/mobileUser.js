@@ -104,8 +104,8 @@ router.get('/vehicales/:custid',function(req,res,next){
         .exec()
         .then(data => {
             console.log("Data Transfer Success..!")
-            console.log(JSON.parse(data.vehicles));
-            res.json(JSON.parse(data.vehicles));
+            console.log((data.vehicles));
+            res.json((data.vehicles));
             
 
         })

@@ -112,7 +112,7 @@ router.get("/getCurrentJobs", function (req, res) {
 
   router.post("/updateStatus/:jobid", function (req, res) {
     var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
-    var authToken = "5a305a0b474c004cd95e9e4df8164b32";
+    var authToken = "c1f93ec2e03781fa672f7b5595bd7d13";
 
     var twilio = require("twilio");
     var client = new twilio(accountId, authToken);
@@ -132,7 +132,7 @@ router.get("/getCurrentJobs", function (req, res) {
             res.json({ state: false, msg: "Failed to Update Data!!!" });
         })
         client.messages.create({
-            body: "\n"+req.body.custId +", "+"\n"+ req.body.jobNo +" has been "+req.body.jobStatus,
+            body: " Dear "+req.body.custId +", "+"\n"+" The Job Id " + req.body.jobNo +" has "+req.body.jobStatus,
             to: req.body.contactnumber,
             from:"+16183703018",
         })
@@ -147,6 +147,8 @@ router.get("/getCurrentJobs", function (req, res) {
             console.log("Data Transfer Unsuccessful..!");
             res.json({ state: false, msg: "Data Transfer Unsuccessful..!" });
           })   
+
+          
 });
 
 /******************************************************** Update Job Items *******************************************************/
@@ -242,7 +244,7 @@ router.post("/sendSMS", function(req, res){
     
       
     var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
-    var authToken = "f4ef8de038aad6b9899dee4c5a07ec12";
+    var authToken = "c1f93ec2e03781fa672f7b5595bd7d13";
 
     var twilio = require("twilio");
     var client = new twilio(accountId, authToken);
