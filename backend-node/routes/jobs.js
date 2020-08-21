@@ -119,8 +119,7 @@ router.get("/getCurrentJobs", function (req, res) {
     const jobNo = req.params.jobid;
     //console.log(req.body.jobStatus)
     //console.log(jobNo)
- 
-    
+
     Job.updateOne({ jobNo: jobNo }, { $set: { jobStatus: req.body.jobStatus, lastmodifiedby: req.body.lastmodifiedby, lastmodifiedon: req.body.lastmodifiedon}})  
     .exec()
         .then(data => {

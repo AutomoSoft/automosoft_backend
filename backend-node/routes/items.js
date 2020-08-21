@@ -336,4 +336,74 @@ router.post("/updateItemUsage", async function (req, res) {
         
     });
 
+
+  /******************************************************** CHART DATA for Item *******************************************************/
+  
+  router.get("/itemChartDAta/:itemid", function (req, res, next) {
+    var datetime = new Date();
+    var currentMonth = datetime.getMonth();   //index starts from 0 (months 0-11)
+    const itemid = req.params.itemid;
+    // console.log(datetime);
+    // console.log(currentMonth);
+    var dataArray1 = new Array();
+    var dataArray2 = new Array();
+
+    
+    ItemUsage.find({ itemid: itemid}) 
+    .exec()
+    .then(docs => {
+        var i = 0;
+        for (i = 0; i < docs.length; i++) {
+
+        var j = 0
+        for (j = 0; j < docs[i].usage.length; j++) {
+
+            if(docs[i].usage[j].date.getMonth() > (datetime.getMonth()-4)){
+
+              var monthlyCount = {
+                month: "",
+                rate: ""
+              }
+
+              var days = function(month,year) {
+                return new Date(year, month, 0).getDate();
+              };
+
+             var dateCount = days(docs[i].usage[j].date.getMonth(),docs[i].usage[j].date.getFullYear());  //number of days in the month
+              monthlyCount.month = docs[i].usage[j].date.toLocaleString('default', { month: 'long' });
+              monthlyCount.rate = (docs[i].usage[j].qty)/dateCount;
+              dataArray1.push(monthlyCount);
+              // console.log(dateCount);
+
+            }
+        }
+ 
+      }
+
+      //merge similar keys 
+      var result = Object.values(dataArray1.reduce((a, c) => {
+        (a[c.month] || (a[c.month] = {month: c.month, Rate: []})).Rate.push(c.rate);
+          return a;
+        }, {}));
+
+      var k =0;
+      for(k=0;k<result.length;k++){
+        // console.log(result[k].Rate);
+        result[k].Rate =  result[k].Rate. reduce(function(a, b){
+          return a + b;
+        }, 0)/result[k].Rate.length;
+      }
+
+      console.log(result);
+      // console.log(dataArray1)
+        res.send(docs)     
+    })
+    .catch(error => {
+        console.log(error);
+        res.status(500).json({
+            error: error
+        });
+    });
+});
+
     module.exports = router; 

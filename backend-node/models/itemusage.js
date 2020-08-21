@@ -11,7 +11,7 @@ const itemusageSchema = mongoose.Schema({
         {
           jobNo: { type: String, require: true  },
           qty: { type: Number, require: true },
-          date: { type: String, require: true },
+          date: { type: Date, require: true },
         }
       ]
 });
