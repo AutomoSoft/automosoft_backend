@@ -248,41 +248,31 @@ router.get("/findReservationByCustomer/:cust_id", function (req, res, next) {
 
 /******************************************************** View All Reservations of Customer Job Category Wise *******************************************************/
 
-router.get("/getReservationsByCategoryOfCust", function (req, res, next) {
+router.get("/getReservByCatOfCust/:uid/:category", function (req, res, next) {
 
-    var category = req.params.cat;
-    var customerid = req.params.uid; //ERR 404
-
-    if(category=="all"){          
-        Reservations.find({custID: customerid},{})    
-            .select()
+    const customer_id = req.params.uid;
+    const category = req.params.category;
+    
+    Reservations.findByCustomerid(customer_id, function (err, reservation) {
+        if (err) throw err;
+        if (!reservation) {    //check the reservation available or not
+            res.json({ state: false, msg: "No user found..!" });
+            return;
+        }
+         Reservations.find({ custID: customer_id, repairtype: category})    //find reservation using userid
+            .select() 
             .exec()
             .then(data => {
-                console.log("Data Transfer Success..!!")
+                console.log("Data Transfer Success..!")
+                //console.log(data);
                 res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-                
 
             })
             .catch(error => {
                 console.log("Data Transfer Unsuccessfull..!")
                 res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
             })
-
-    }else{                                                                         
-        Reservations.find({ repairtype: category, custID: customerid})    
-        .select()
-        .exec()
-        .then(data => {
-            console.log("Data Transfer Success..!")
-            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
-            
-
-        })
-        .catch(error => {
-            console.log("Data Transfer Unsuccessfull..!")
-            res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
-        })
-    }
+    })
     
 });
 
