@@ -259,7 +259,9 @@ router.get("/getReservByCatOfCust/:uid/:category", function (req, res, next) {
             res.json({ state: false, msg: "No user found..!" });
             return;
         }
-         Reservations.find({ custID: customer_id, repairtype: category})    //find reservation using userid
+
+        if(category == "ALL"){
+            Reservations.find({custID: customer_id})    //find reservation using userid
             .select() 
             .exec()
             .then(data => {
@@ -272,6 +274,24 @@ router.get("/getReservByCatOfCust/:uid/:category", function (req, res, next) {
                 console.log("Data Transfer Unsuccessfull..!")
                 res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
             })
+        }else{
+
+            Reservations.find({ custID: customer_id, repairtype: category})    //find reservation using userid
+            .select() 
+            .exec()
+            .then(data => {
+                console.log("Data Transfer Success..!")
+                //console.log(data);
+                res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+
+            })
+            .catch(error => {
+                console.log("Data Transfer Unsuccessfull..!")
+                res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+            })
+
+        }
+         
     })
     
 });
