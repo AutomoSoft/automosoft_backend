@@ -327,7 +327,7 @@ router.post("/acceptReservation/:resevid", function (req, res) {
     const resevid = req.params.resevid;
 
     var accountId = "AC6bac2239c2323511e7c873c162b5afd2";
-    var authToken = "c1f93ec2e03781fa672f7b5595bd7d13";
+    var authToken = "a3ff890a6823164de9dd99690b780fab";
 
     var twilio = require("twilio");
     var client = new twilio(accountId, authToken);
