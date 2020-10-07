@@ -186,6 +186,26 @@ router.post("/createInvoice", async function (req, res) {
                     
 });
 
+/******************************************************** View All Invoices *******************************************************/
+
+router.get("/viewAllInvoices", function (req, res, next) {
+    
+    Invoice.find({},{invoiceNo:1, invoiceDate:1, jobNo:1, jobDate:1, custId:1, firstName:1, lastName:1, vehicleNo:1,engineNo:1,subTotal:1, tax:1, grandTotal:1, amountPaid:1,balance:1,note:1,createdBy:1,filePath:1})    
+        .select()
+        .exec()
+        .then(data => {
+            console.log("Data Transfer Success..!")
+            res.json({ state: true, msg: "Data Transfer Success..!", data: data });
+            
+
+        })
+        .catch(error => {
+            console.log("Data Transfer Unsuccessfull..!")
+            res.json({ state: false, msg: "Data Transfer Unsuccessfull..!" });
+        })
+
+});
+
 
 
 
